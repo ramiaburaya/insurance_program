@@ -5,6 +5,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -18,8 +20,9 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class MenuPage {
+    public static Stage menuPageStage = new Stage();
+
     public static void PrintMenuPage() {
-        Stage menuPageStage = new Stage();
 
         AnchorPane rootPane = new AnchorPane();
         rootPane.setBackground(new Background(new BackgroundFill(Color.web("#BFACE2"), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -48,13 +51,17 @@ public class MenuPage {
         icon.setStyle("-fx-opacity: 0.7;");
         icon.setImage(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
 
+        Label op = Util.createLabel("The operation", 53, 36);
+        TextField opField = Util.createTextField("The operation", 147, 37);
+        opField.setEditable(false);
+
         Button createButton = new Button("Create Insurance");
         createButton.setCursor(Cursor.HAND);
         createButton.setTextFill(Paint.valueOf("#fffdfd"));
         createButton.getStyleClass().add("button");
         createButton.setOnAction(e -> {
             secondPane.getChildren().clear();
-
+            opField.setText("Create Insurance");
 
             Button clientInfo = new Button("Client Information");
             clientInfo.setCursor(Cursor.HAND);
@@ -107,19 +114,29 @@ public class MenuPage {
         deleteButton.setCursor(Cursor.HAND);
         deleteButton.setTextFill(Paint.valueOf("#fffdfd"));
         deleteButton.getStyleClass().add("button");
-        deleteButton.setOnAction(e -> secondPane.getChildren().clear());
+        deleteButton.setOnAction(e -> {
+
+            secondPane.getChildren().clear();
+            opField.setText("Delete Insurance");
+        });
 
         Button modifyButton = new Button("Modify Insurance");
         modifyButton.setCursor(Cursor.HAND);
         modifyButton.setTextFill(Paint.valueOf("#fffdfd"));
         modifyButton.getStyleClass().add("button");
-        modifyButton.setOnAction(e -> secondPane.getChildren().clear());
+        modifyButton.setOnAction(e -> {
+            secondPane.getChildren().clear();
+            opField.setText("Modify Insurance");
+        });
 
         Button searchButton = new Button("Search");
         searchButton.setCursor(Cursor.HAND);
         searchButton.setTextFill(Paint.valueOf("#fffdfd"));
         searchButton.getStyleClass().add("button");
-        searchButton.setOnAction(e -> secondPane.getChildren().clear());
+        searchButton.setOnAction(e -> {
+            secondPane.getChildren().clear();
+            opField.setText("Search");
+        });
 
         Button logoutButton = new Button("Logout");
         logoutButton.setLayoutX(1276);
@@ -136,7 +153,7 @@ public class MenuPage {
 
         buttonBar.getButtons().addAll(createButton, deleteButton, modifyButton, searchButton);
 
-        rootPane.getChildren().addAll(icon, buttonBar, secondPane, logoutButton);
+        rootPane.getChildren().addAll(op, opField, icon, buttonBar, secondPane, logoutButton);
         Scene scene = new Scene(rootPane, 1365, 713);
         scene.getStylesheets().add(Util.style);
         scene.setFill(Color.web("#491e54"));

@@ -4,17 +4,24 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 public class CreateInsurance {
-
+    private static int num = 0; // 1:one phone,2:two phone
     private static Client client;
-    private Car car = new Car();
-
+    private final Car car = new Car();
+    private static final Connection conn = DBConnection.getConnection();
     private static final Alert alert = new Alert(Alert.AlertType.NONE);
+    private static byte[] idImage;
+    private static boolean idImageRead = false;
+    private static byte[] drivingImage;
+    private static boolean drivingImageRead = false;
 
     public CreateInsurance() {
 
@@ -54,22 +61,86 @@ public class CreateInsurance {
         dateOfBirthPicker.setLayoutX(479);
         dateOfBirthPicker.setLayoutY(250);
 
-
+        Button refreshButton = Util.createButton("Refresh", 14, 16, 68, 25);
         Button idImageButton = Util.createButton("ID image", 650, 312, 145, 25);
-
         Button drivingImageButton = Util.createButton("Driving image", 650, 364, 145, 25);
-
+        Button checkIDAndPhoneButton = Util.createButton("Check", 827, 28, 47, 25);
+        Button searchButton = Util.createButton("search", 0, 0, 75, 25);
         Button addButton = Util.createButton("Add", 0, 0, 75, 25);
         addButton.setDisable(true);
+
+        refreshButton.setOnAction(refreshEvent -> {
+            MenuPage.menuPageStage.close();
+            MenuPage.PrintMenuPage();
+        });
+
         addButton.setOnAction(addEvent -> {
+            if (Util.isEmptyField(firstNameField) || Util.isEmptyField(secondNameField) || Util.isEmptyField(thirdNameField)
+                    || Util.isEmptyField(lastNameField) || Util.isEmptyField(idNumberField) || Util.isEmptyField(phoneOneField)
+                    || !idImageRead || !drivingImageRead) {
+                alert.setAlertType(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("Some data not entered");
+                alert.show();
+            } else {
+                try {
+                    PreparedStatement addStmt = conn.prepareStatement("insert into client (ssn,first_name, second_name, third_name, fourth_name,dob,phone_1,phone_2,ssn_image,driving_license) values (?,?,?,?,?,?,?,?,?,?)");
+
+                    addStmt.setString(1, idNumberField.getText());
+                    addStmt.setString(2, firstNameField.getText());
+                    addStmt.setString(3, secondNameField.getText());
+                    addStmt.setString(4, thirdNameField.getText());
+                    addStmt.setString(5, lastNameField.getText());
+                    addStmt.setString(6, String.valueOf(Util.formatterDate(dateOfBirthPicker)));
+                    addStmt.setString(7, phoneOneField.getText());
+                    if (num == 1) {
+                        addStmt.setString(8, "0");
+                    } else {
+                        addStmt.setString(8, phoneTwoField.getText());
+
+                    }
+                    addStmt.setString(9, Arrays.toString(idImage));
+                    addStmt.setString(10, Arrays.toString(drivingImage));
+                    addStmt.executeUpdate();
+                    addStmt.close();
+                    conn.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+
+            addButton.setDisable(true);
+            idImageButton.setDisable(true);
+            drivingImageButton.setDisable(true);
+            checkIDAndPhoneButton.setDisable(true);
+            searchButton.setDisable(true);
 
         });
 
-        Button searchButton = Util.createButton("search", 0, 0, 75, 25);
+        checkIDAndPhoneButton.setOnAction(checkIDAndPhoneEvent -> {
+            if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
+                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))
+                    && (Util.isValid(phoneTwoField, 10) && Util.isInt(phoneTwoField))) {
+                addButton.setDisable(false);
+                checkIDAndPhoneButton.setDisable(true);
+            } else if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
+                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))) {
+                num = 1;
+                addButton.setDisable(false);
+                checkIDAndPhoneButton.setDisable(true);
+            } else {
+                alert.setAlertType(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("check if the id number digit is : 9 And phone number digit is :10");
+                alert.show();
+            }
+        });
+
         searchButton.setOnAction(searchEvent -> {
             if (!idNumberField.getText().equals("")) {
                 try {
-                    Connection conn = DBConnection.getConnection();
+
                     PreparedStatement searchStmt = conn.prepareStatement("select * from client where ssn=?");
                     searchStmt.setString(1, idNumberField.getText());
 
@@ -89,15 +160,13 @@ public class CreateInsurance {
                         lastNameField.setText(resultSet.getString("fourth_name"));
                         alert.setAlertType(Alert.AlertType.INFORMATION);
                         alert.setContentText("The user is in the database, you can add a new car");
-                        phoneOneField.setText(resultSet.getString("phone_1"));
-                        phoneTwoField.setText(resultSet.getString("phone_2"));
+                        phoneOneField.setText("0" + resultSet.getString("phone_1"));
+                        phoneTwoField.setText("0" + resultSet.getString("phone_2"));
 
                     } else {
                         alert.setAlertType(Alert.AlertType.ERROR);
                         alert.setContentText("The user does not exist in the database");
-                        addButton.setDisable(false);
-
-                        //TODO When the user not in database you should add it
+                        rootPane.getChildren().add(checkIDAndPhoneButton);
                     }
                     alert.show();
 
@@ -112,6 +181,22 @@ public class CreateInsurance {
             }
         });
 
+        idImageButton.setOnAction(idImageEvent -> {
+            try {
+                idImage = Util.ReadImage(MenuPage.menuPageStage);
+                idImageRead = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        drivingImageButton.setOnAction(drivingImageEvent -> {
+            try {
+                drivingImage = Util.ReadImage(MenuPage.menuPageStage);
+                drivingImageRead = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         ButtonBar buttonBar = new ButtonBar();
         buttonBar.setPadding(new Insets(5));
@@ -120,15 +205,9 @@ public class CreateInsurance {
         buttonBar.setLayoutX(533);
         buttonBar.setLayoutY(402);
         buttonBar.getButtons().addAll(addButton, searchButton);
-           /* DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
-            LocalDate date = dateOfBirthPicker.getValue();
-            if (date != null) {
-                System.out.println(formatter.format(date));
-            }*/
-
-        rootPane.getChildren().addAll(idNumberLabel, idNumberField, firstNameLabel, firstNameField, secondNameLabel, secondNameField, thirdNameLabel, thirdNameField, lastNameLabel, lastNameField, dateOfBirthLabel, dateOfBirthPicker, phoneOneLabel, phoneOneField, phoneTwoLabel, phoneTwoField, idImageLabel, idImageButton, drivingImageLabel, drivingImageButton, buttonBar);
+        rootPane.getChildren().addAll(refreshButton, idNumberLabel, idNumberField, firstNameLabel, firstNameField, secondNameLabel, secondNameField, thirdNameLabel, thirdNameField, lastNameLabel, lastNameField, dateOfBirthLabel, dateOfBirthPicker, phoneOneLabel, phoneOneField, phoneTwoLabel, phoneTwoField, idImageLabel, idImageButton, drivingImageLabel, drivingImageButton, buttonBar);
         return rootPane;
     }
 

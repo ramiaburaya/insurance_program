@@ -87,7 +87,8 @@ public class LoginPage {
                     error.setContentText("Password or username is incorrect");
                     error.show();
                 }
-
+                stmt.close();
+                conn.close();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

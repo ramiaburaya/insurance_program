@@ -3,11 +3,23 @@ package com.example.database_final_project;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 
@@ -47,4 +59,43 @@ public class Util {
 
         return button;
     }
+
+    public static boolean isEmptyField(TextField textField) {
+        return textField.getText().equals("");
+    }
+
+    public static boolean isValid(TextField textField, int length) {
+        return textField.getText().trim().length() == length;
+    }
+
+    public static boolean isInt(TextField s) {
+        try {
+            int Value = Integer.parseInt(s.getText());
+            return true;
+        } catch (NumberFormatException ignored) {
+        }
+        return false;
+    }
+
+    public static byte[] ReadImage(Stage stage) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        byte[] fileData = new byte[0];
+        if (selectedFile != null) {
+            fileData = Files.readAllBytes(selectedFile.toPath());
+        }
+        return fileData;
+    }
+
+    public static LocalDate formatterDate(DatePicker dateOfBirthPicker) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
+        LocalDate date = dateOfBirthPicker.getValue();
+        if (date != null) {
+            return LocalDate.parse(formatter.format(date));
+        }
+        return null;
+    }
+
 }
