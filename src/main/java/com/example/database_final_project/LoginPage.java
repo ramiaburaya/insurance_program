@@ -37,8 +37,8 @@ public class LoginPage {
         icon.setLayoutX(243);
         icon.setLayoutY(52);
         icon.setStyle("-fx-opacity: 0.7;");
-
         icon.setImage(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
+
         Label usernameLabel = new Label("Username");
         usernameLabel.setPadding(new Insets(5));
         usernameLabel.setPrefSize(82, 27);
@@ -56,13 +56,14 @@ public class LoginPage {
         usernameText.setPrefSize(149, 25);
         usernameText.setLayoutX(315);
         usernameText.setLayoutY(140);
-
+        usernameText.setPromptText("Username");
 
         PasswordField passwordText = new PasswordField();
         passwordText.setPadding(new Insets(5));
         passwordText.setPrefSize(149, 25);
         passwordText.setLayoutX(315);
         passwordText.setLayoutY(209);
+        passwordText.setPromptText("Password");
 
         Button login = new Button("Login");
         login.setCursor(Cursor.HAND);
@@ -71,20 +72,18 @@ public class LoginPage {
         login.setLayoutX(269);
         login.setLayoutY(274);
         login.setFont(new Font(14));
-        login.setId("button");
         login.setTextFill(Paint.valueOf("#fffdfd"));
         login.getStyleClass().add("button");
-
         login.setOnAction(event -> {
 
-            String username = usernameText.getText().trim();
-            String password = passwordText.getText();
+            String enteredUsername = usernameText.getText().trim();
+            String enteredPassword = passwordText.getText();
             try {
                 /*prepareStatement to avoid sql injection*/
                 Connection conn = DBConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement("select * from insurance.employee where emp_id=? and password =?");
-                stmt.setString(1, username);
-                stmt.setString(2, password);
+                stmt.setString(1, enteredUsername);
+                stmt.setString(2, enteredPassword);
 
                 ResultSet resultSet = stmt.executeQuery();
 
@@ -94,9 +93,11 @@ public class LoginPage {
                             , resultSet.getString("third_name"), resultSet.getString("fourth_name")
                             , Integer.parseInt(resultSet.getString("phone_1")), resultSet.getString("dob")
                             , resultSet.getString("password"));
+                    MenuPage.PrintMenuPage();
+                    loginPageStage.close();
                 } else {
                     Alert error = new Alert(Alert.AlertType.ERROR);
-                    error.setTitle("something Wrong");
+                    error.setTitle("Error");
                     error.setContentText("Password or username is incorrect");
                     error.show();
                 }
@@ -110,8 +111,9 @@ public class LoginPage {
 
         Scene scene = new Scene(rootPane, 600, 400);
         scene.setFill(Color.web("#491e54"));
+
         scene.getStylesheets().add(Objects.requireNonNull(LoginPage.class.getResource("style.css")).toExternalForm());
-        loginPageStage.setTitle("Login");
+        loginPageStage.setTitle("Tamkeen");
         loginPageStage.setScene(scene);
         loginPageStage.getIcons().add(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
         loginPageStage.setResizable(false);
