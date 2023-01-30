@@ -1,11 +1,6 @@
 package com.example.database_final_project;
 
-public class Employee {
-    public Employee() {
-
-    }
-
-    private String empID;
+public class Client {
     private int ssn;
     private String firstName;
     private String secondName;
@@ -15,10 +10,11 @@ public class Employee {
     private int phone_2;
 
     private String date;
-    private String password;
 
-    public Employee(String empID, int ssn, String firstName, String secondName, String thirdName, String fourthName, int phone_1,int phone_2, String date, String password) {
-        this.empID = empID;
+    public Client() {
+    }
+
+    public Client(int ssn, String firstName, String secondName, String thirdName, String fourthName, int phone_1, int phone_2, String date) {
         this.ssn = ssn;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -26,17 +22,7 @@ public class Employee {
         this.fourthName = fourthName;
         this.phone_1 = phone_1;
         this.phone_2 = phone_2;
-
         this.date = date;
-        this.password = password;
-    }
-
-    public String getEmpID() {
-        return empID;
-    }
-
-    public void setEmpID(String empID) {
-        this.empID = empID;
     }
 
     public int getSsn() {
@@ -87,6 +73,13 @@ public class Employee {
         this.phone_1 = phone_1;
     }
 
+    public int getPhone_2() {
+        return phone_2;
+    }
+
+    public void setPhone_2(int phone_2) {
+        this.phone_2 = phone_2;
+    }
 
     public String getDate() {
         return date;
@@ -96,34 +89,17 @@ public class Employee {
         this.date = date;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getPhone_2() {
-        return phone_2;
-    }
-
-    public void setPhone_2(int phone_2) {
-        this.phone_2 = phone_2;
-    }
-
     @Override
     public String toString() {
-        return "Employee{" +
-                "empID='" + empID + '\'' +
-                ", ssn=" + ssn +
+        return "Client{" +
+                "ssn=" + ssn +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", thirdName='" + thirdName + '\'' +
                 ", fourthName='" + fourthName + '\'' +
                 ", phone_1=" + phone_1 +
+                ", phone_2=" + phone_2 +
                 ", date='" + date + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }

@@ -25,6 +25,14 @@ public class MenuPage {
         rootPane.setBackground(new Background(new BackgroundFill(Color.web("#BFACE2"), CornerRadii.EMPTY, Insets.EMPTY)));
         rootPane.setPadding(new Insets(10));
 
+
+        AnchorPane secondPane = new AnchorPane();
+        secondPane.setPadding(new Insets(5));
+        secondPane.setLayoutX(5);
+        secondPane.setLayoutY(96);
+        secondPane.setPrefSize(1354, 559);
+        secondPane.getStyleClass().add("pane");
+
         ButtonBar buttonBar = new ButtonBar();
         buttonBar.setPadding(new Insets(5));
         buttonBar.setPrefSize(500, 40);
@@ -45,32 +53,73 @@ public class MenuPage {
         createButton.setTextFill(Paint.valueOf("#fffdfd"));
         createButton.getStyleClass().add("button");
         createButton.setOnAction(e -> {
+            secondPane.getChildren().clear();
 
+
+            Button clientInfo = new Button("Client Information");
+            clientInfo.setCursor(Cursor.HAND);
+            clientInfo.setTextFill(Paint.valueOf("#fffdfd"));
+            clientInfo.getStyleClass().add("button");
+
+            Button driversInfo = new Button("Driver Information");
+            driversInfo.setCursor(Cursor.HAND);
+            driversInfo.setTextFill(Paint.valueOf("#fffdfd"));
+            driversInfo.getStyleClass().add("button");
+
+
+            Button carInfo = new Button("Car Information");
+            carInfo.setCursor(Cursor.HAND);
+            carInfo.setTextFill(Paint.valueOf("#fffdfd"));
+            carInfo.getStyleClass().add("button");
+
+            ButtonBar createButtonsPane = new ButtonBar();
+            createButtonsPane.setPadding(new Insets(5));
+            createButtonsPane.setPrefSize(396, 40);
+            createButtonsPane.setButtonMinWidth(70);
+            createButtonsPane.setLayoutX(479);
+            createButtonsPane.setLayoutY(14);
+            createButtonsPane.getButtons().addAll(clientInfo, carInfo, driversInfo);
+
+
+            clientInfo.setOnAction(clientEvent -> {
+                secondPane.getChildren().clear();
+                secondPane.getChildren().addAll(createButtonsPane, CreateInsurance.ClientPane());
+            });
+
+            carInfo.setOnAction(carEvent -> {
+                secondPane.getChildren().clear();
+
+                secondPane.getChildren().addAll(createButtonsPane, CreateInsurance.CarPane());
+
+
+            });
+
+            driversInfo.setOnAction(driverEvent -> {
+                secondPane.getChildren().clear();
+
+                secondPane.getChildren().addAll(createButtonsPane, CreateInsurance.DriverPane());
+
+            });
+            secondPane.getChildren().add(createButtonsPane);
         });
 
         Button deleteButton = new Button("Delete Insurance");
         deleteButton.setCursor(Cursor.HAND);
         deleteButton.setTextFill(Paint.valueOf("#fffdfd"));
         deleteButton.getStyleClass().add("button");
-        deleteButton.setOnAction(e -> {
-
-        });
+        deleteButton.setOnAction(e -> secondPane.getChildren().clear());
 
         Button modifyButton = new Button("Modify Insurance");
         modifyButton.setCursor(Cursor.HAND);
         modifyButton.setTextFill(Paint.valueOf("#fffdfd"));
         modifyButton.getStyleClass().add("button");
-        modifyButton.setOnAction(e -> {
-
-        });
+        modifyButton.setOnAction(e -> secondPane.getChildren().clear());
 
         Button searchButton = new Button("Search");
         searchButton.setCursor(Cursor.HAND);
         searchButton.setTextFill(Paint.valueOf("#fffdfd"));
         searchButton.getStyleClass().add("button");
-        searchButton.setOnAction(e -> {
-
-        });
+        searchButton.setOnAction(e -> secondPane.getChildren().clear());
 
         Button logoutButton = new Button("Logout");
         logoutButton.setLayoutX(1276);
@@ -87,15 +136,15 @@ public class MenuPage {
 
         buttonBar.getButtons().addAll(createButton, deleteButton, modifyButton, searchButton);
 
-        rootPane.getChildren().addAll(icon, buttonBar, logoutButton);
+        rootPane.getChildren().addAll(icon, buttonBar, secondPane, logoutButton);
         Scene scene = new Scene(rootPane, 1365, 713);
-        scene.getStylesheets().add(Objects.requireNonNull(LoginPage.class.getResource("style.css")).toExternalForm());
+        scene.getStylesheets().add(Util.style);
         scene.setFill(Color.web("#491e54"));
 
         menuPageStage.setScene(scene);
-        menuPageStage.getIcons().add(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
+        menuPageStage.getIcons().add(Util.icon);
         menuPageStage.setMaximized(true);
-        menuPageStage.setTitle("Tamkeen");
+        menuPageStage.setTitle(Util.name);
         menuPageStage.show();
     }
 }

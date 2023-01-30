@@ -2,7 +2,6 @@ package com.example.database_final_project;
 
 
 import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -12,7 +11,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -65,17 +63,9 @@ public class LoginPage {
         passwordText.setLayoutY(209);
         passwordText.setPromptText("Password");
 
-        Button login = new Button("Login");
-        login.setCursor(Cursor.HAND);
-        login.setPadding(new Insets(5));
-        login.setPrefSize(62, 27);
-        login.setLayoutX(269);
-        login.setLayoutY(274);
+        Button login = Util.createButton("Login", 269, 274, 62, 27);
         login.setFont(new Font(14));
-        login.setTextFill(Paint.valueOf("#fffdfd"));
-        login.getStyleClass().add("button");
         login.setOnAction(event -> {
-
             String enteredUsername = usernameText.getText().trim();
             String enteredPassword = passwordText.getText();
             try {
@@ -88,11 +78,7 @@ public class LoginPage {
                 ResultSet resultSet = stmt.executeQuery();
 
                 if (resultSet.next()) {
-                    emp = new Employee(resultSet.getString("emp_id"), Integer.parseInt(resultSet.getString("ssn"))
-                            , resultSet.getString("first_name"), resultSet.getString("second_name")
-                            , resultSet.getString("third_name"), resultSet.getString("fourth_name")
-                            , Integer.parseInt(resultSet.getString("phone_1")), resultSet.getString("dob")
-                            , resultSet.getString("password"));
+                    emp = new Employee(resultSet.getString("emp_id"), Integer.parseInt(resultSet.getString("ssn")), resultSet.getString("first_name"), resultSet.getString("second_name"), resultSet.getString("third_name"), resultSet.getString("fourth_name"), Integer.parseInt(resultSet.getString("phone_1")), Integer.parseInt(resultSet.getString("phone_2")), resultSet.getString("dob"), resultSet.getString("password"));
                     MenuPage.PrintMenuPage();
                     loginPageStage.close();
                 } else {
@@ -112,10 +98,10 @@ public class LoginPage {
         Scene scene = new Scene(rootPane, 600, 400);
         scene.setFill(Color.web("#491e54"));
 
-        scene.getStylesheets().add(Objects.requireNonNull(LoginPage.class.getResource("style.css")).toExternalForm());
-        loginPageStage.setTitle("Tamkeen");
+        scene.getStylesheets().add(Util.style);
+        loginPageStage.setTitle(Util.name);
         loginPageStage.setScene(scene);
-        loginPageStage.getIcons().add(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
+        loginPageStage.getIcons().add(Util.icon);
         loginPageStage.setResizable(false);
         loginPageStage.show();
     }
