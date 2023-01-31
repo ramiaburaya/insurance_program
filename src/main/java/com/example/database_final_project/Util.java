@@ -2,10 +2,7 @@ package com.example.database_final_project;
 
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
@@ -28,20 +25,30 @@ public class Util {
     public static Image icon = new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm());
     public static String style = Objects.requireNonNull(LoginPage.class.getResource("style.css")).toExternalForm();
 
-    public static Label createLabel(String text, double layoutX, double layoutY) {
+    public static Label createLabel(String text, double layoutX, double layoutY, double width, double height) {
         Label label = new Label(text);
         label.setPadding(new Insets(5));
-        label.setPrefSize(93, 27);
+        label.setPrefSize(width, height);
         label.setLayoutX(layoutX);
         label.setLayoutY(layoutY);
         return label;
     }
 
-    public static TextField createTextField(String promptText, double layoutX, double layoutY) {
+    public static ButtonBar createButtonBar(double layoutX, double layoutY, double width, double height, double buttonMinWidth) {
+        ButtonBar buttonBar = new ButtonBar();
+        buttonBar.setPadding(new Insets(5));
+        buttonBar.setPrefSize(width, height);
+        buttonBar.setButtonMinWidth(buttonMinWidth);
+        buttonBar.setLayoutX(layoutX);
+        buttonBar.setLayoutY(layoutY);
+        return buttonBar;
+    }
+
+    public static TextField createTextField(String promptText, double layoutX, double layoutY, double width, double height) {
         TextField textField = new TextField();
         textField.setPromptText(promptText);
         textField.setPadding(new Insets(5));
-        textField.setPrefSize(145, 27);
+        textField.setPrefSize(width, height);
         textField.setLayoutX(layoutX);
         textField.setLayoutY(layoutY);
         return textField;

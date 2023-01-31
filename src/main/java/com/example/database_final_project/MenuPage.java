@@ -36,12 +36,8 @@ public class MenuPage {
         secondPane.setPrefSize(1354, 559);
         secondPane.getStyleClass().add("pane");
 
-        ButtonBar buttonBar = new ButtonBar();
-        buttonBar.setPadding(new Insets(5));
-        buttonBar.setPrefSize(500, 40);
-        buttonBar.setButtonMinWidth(70);
-        buttonBar.setLayoutX(433);
-        buttonBar.setLayoutY(29);
+        ButtonBar buttonBar = Util.createButtonBar(433, 29, 500, 40, 70);
+
 
         ImageView icon = new ImageView();
         icon.setFitHeight(70);
@@ -51,8 +47,8 @@ public class MenuPage {
         icon.setStyle("-fx-opacity: 0.7;");
         icon.setImage(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
 
-        Label op = Util.createLabel("The operation", 53, 36);
-        TextField opField = Util.createTextField("The operation", 147, 37);
+        Label op = Util.createLabel("The operation", 53, 36, 93, 27);
+        TextField opField = Util.createTextField("The operation", 147, 37, 145, 27);
         opField.setEditable(false);
 
         Button createButton = new Button("Create Insurance");
@@ -79,12 +75,7 @@ public class MenuPage {
             carInfo.setTextFill(Paint.valueOf("#fffdfd"));
             carInfo.getStyleClass().add("button");
 
-            ButtonBar createButtonsPane = new ButtonBar();
-            createButtonsPane.setPadding(new Insets(5));
-            createButtonsPane.setPrefSize(396, 40);
-            createButtonsPane.setButtonMinWidth(70);
-            createButtonsPane.setLayoutX(479);
-            createButtonsPane.setLayoutY(14);
+            ButtonBar createButtonsPane = Util.createButtonBar(479, 14, 396, 40, 70);
             createButtonsPane.getButtons().addAll(clientInfo, carInfo, driversInfo);
 
 

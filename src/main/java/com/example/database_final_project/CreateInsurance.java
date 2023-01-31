@@ -5,23 +5,20 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 public class CreateInsurance {
     private static int num = 0; // 1:one phone,2:two phone
     private static Client client;
     private final Car car = new Car();
-    private static final Connection conn = DBConnection.getConnection();
     private static final Alert alert = new Alert(Alert.AlertType.NONE);
     private static byte[] idImage;
-    private static boolean idImageRead = false;
     private static byte[] drivingImage;
     private static boolean drivingImageRead = false;
+    private static boolean idImageRead = false;
+    private static ResultSet resultSet;
 
     public CreateInsurance() {
 
@@ -36,24 +33,24 @@ public class CreateInsurance {
 
         rootPane.getChildren().clear();
 
-        Label idNumberLabel = Util.createLabel("ID number", 485, 28);
-        Label firstNameLabel = Util.createLabel("First name", 479, 75);
-        Label secondNameLabel = Util.createLabel("Second name", 651, 75);
-        Label thirdNameLabel = Util.createLabel("Third name", 479, 151);
-        Label lastNameLabel = Util.createLabel("Last name", 651, 151);
-        Label dateOfBirthLabel = Util.createLabel("Date of Birth", 479, 222);
-        Label phoneOneLabel = Util.createLabel("Phone one", 651, 222);
-        Label phoneTwoLabel = Util.createLabel("Phone two", 479, 286);
-        Label idImageLabel = Util.createLabel("ID image", 651, 286);
-        Label drivingImageLabel = Util.createLabel("Driving image", 485, 364);
+        Label idNumberLabel = Util.createLabel("ID number", 485, 28, 93, 27);
+        Label firstNameLabel = Util.createLabel("First name", 479, 75, 93, 27);
+        Label secondNameLabel = Util.createLabel("Second name", 651, 75, 93, 27);
+        Label thirdNameLabel = Util.createLabel("Third name", 479, 151, 93, 27);
+        Label lastNameLabel = Util.createLabel("Last name", 651, 151, 93, 27);
+        Label dateOfBirthLabel = Util.createLabel("Date of Birth", 479, 222, 93, 27);
+        Label phoneOneLabel = Util.createLabel("Phone one", 651, 222, 93, 27);
+        Label phoneTwoLabel = Util.createLabel("Phone two", 479, 286, 93, 27);
+        Label idImageLabel = Util.createLabel("ID image", 651, 286, 93, 27);
+        Label drivingImageLabel = Util.createLabel("Driving image", 485, 364, 93, 27);
 
-        TextField idNumberField = Util.createTextField("ID number", 650, 28);
-        TextField firstNameField = Util.createTextField("First name", 479, 102);
-        TextField secondNameField = Util.createTextField("Second name", 650, 102);
-        TextField thirdNameField = Util.createTextField("Third name", 479, 178);
-        TextField lastNameField = Util.createTextField("Last name", 650, 177);
-        TextField phoneOneField = Util.createTextField("Phone one", 650, 250);
-        TextField phoneTwoField = Util.createTextField("Phone two", 479, 313);
+        TextField idNumberField = Util.createTextField("ID number", 650, 28, 145, 27);
+        TextField firstNameField = Util.createTextField("First name", 479, 102, 145, 27);
+        TextField secondNameField = Util.createTextField("Second name", 650, 102, 145, 27);
+        TextField thirdNameField = Util.createTextField("Third name", 479, 178, 145, 27);
+        TextField lastNameField = Util.createTextField("Last name", 650, 177, 145, 27);
+        TextField phoneOneField = Util.createTextField("Phone one", 650, 250, 145, 27);
+        TextField phoneTwoField = Util.createTextField("Phone two", 479, 313, 145, 27);
 
         DatePicker dateOfBirthPicker = new DatePicker();
         dateOfBirthPicker.setPadding(new Insets(5));
@@ -84,26 +81,10 @@ public class CreateInsurance {
                 alert.show();
             } else {
                 try {
-                    PreparedStatement addStmt = conn.prepareStatement("insert into client (ssn,first_name, second_name, third_name, fourth_name,dob,phone_1,phone_2,ssn_image,driving_license) values (?,?,?,?,?,?,?,?,?,?)");
+                    DBConnection.insertClient(idNumberField.getText(), firstNameField.getText(), secondNameField.getText()
+                            , thirdNameField.getText(), lastNameField.getText(), dateOfBirthPicker
+                            , phoneOneField.getText(), phoneTwoField.getText(), idImage, drivingImage, num);
 
-                    addStmt.setString(1, idNumberField.getText());
-                    addStmt.setString(2, firstNameField.getText());
-                    addStmt.setString(3, secondNameField.getText());
-                    addStmt.setString(4, thirdNameField.getText());
-                    addStmt.setString(5, lastNameField.getText());
-                    addStmt.setString(6, String.valueOf(Util.formatterDate(dateOfBirthPicker)));
-                    addStmt.setString(7, phoneOneField.getText());
-                    if (num == 1) {
-                        addStmt.setString(8, "0");
-                    } else {
-                        addStmt.setString(8, phoneTwoField.getText());
-
-                    }
-                    addStmt.setString(9, Arrays.toString(idImage));
-                    addStmt.setString(10, Arrays.toString(drivingImage));
-                    addStmt.executeUpdate();
-                    addStmt.close();
-                    conn.close();
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
@@ -138,13 +119,9 @@ public class CreateInsurance {
         });
 
         searchButton.setOnAction(searchEvent -> {
-            if (!idNumberField.getText().equals("")) {
+            if (!Util.isEmptyField(idNumberField)) {
                 try {
-
-                    PreparedStatement searchStmt = conn.prepareStatement("select * from client where ssn=?");
-                    searchStmt.setString(1, idNumberField.getText());
-
-                    ResultSet resultSet = searchStmt.executeQuery();
+                    resultSet = DBConnection.searchClient(idNumberField.getText());
                     alert.setTitle("Result");
                     if (resultSet.next()) {
                         drivingImageButton.setDisable(true);
@@ -164,6 +141,8 @@ public class CreateInsurance {
                         phoneTwoField.setText("0" + resultSet.getString("phone_2"));
 
                     } else {
+                        idImageButton.setDisable(false);
+                        drivingImageButton.setDisable(false);
                         alert.setAlertType(Alert.AlertType.ERROR);
                         alert.setContentText("The user does not exist in the database");
                         rootPane.getChildren().add(checkIDAndPhoneButton);
@@ -172,6 +151,12 @@ public class CreateInsurance {
 
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
+                }
+                try {
+                    DBConnection.stmt.close();
+                    DBConnection.conn.close();
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
                 }
             } else {
                 alert.setAlertType(Alert.AlertType.ERROR);
@@ -198,12 +183,8 @@ public class CreateInsurance {
             }
         });
 
-        ButtonBar buttonBar = new ButtonBar();
-        buttonBar.setPadding(new Insets(5));
-        buttonBar.setPrefSize(183, 54);
-        buttonBar.setButtonMinWidth(70);
-        buttonBar.setLayoutX(533);
-        buttonBar.setLayoutY(402);
+        ButtonBar buttonBar = Util.createButtonBar(533, 402, 183, 54, 70);
+
         buttonBar.getButtons().addAll(addButton, searchButton);
 
 

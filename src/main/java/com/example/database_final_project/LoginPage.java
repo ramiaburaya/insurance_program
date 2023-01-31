@@ -14,9 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class LoginPage {
@@ -37,24 +36,10 @@ public class LoginPage {
         icon.setStyle("-fx-opacity: 0.7;");
         icon.setImage(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
 
-        Label usernameLabel = new Label("Username");
-        usernameLabel.setPadding(new Insets(5));
-        usernameLabel.setPrefSize(82, 27);
-        usernameLabel.setLayoutX(212);
-        usernameLabel.setLayoutY(139);
+        Label usernameLabel = Util.createLabel("Username", 212, 139, 82, 27);
+        Label passwordLabel = Util.createLabel("Password", 212, 208, 82, 27);
 
-        Label passwordLabel = new Label("Password");
-        passwordLabel.setPadding(new Insets(5));
-        passwordLabel.setPrefSize(82, 27);
-        passwordLabel.setLayoutX(212);
-        passwordLabel.setLayoutY(208);
-
-        TextField usernameText = new TextField();
-        usernameText.setPadding(new Insets(5));
-        usernameText.setPrefSize(149, 25);
-        usernameText.setLayoutX(315);
-        usernameText.setLayoutY(140);
-        usernameText.setPromptText("Username");
+        TextField usernameText = Util.createTextField("Username", 315, 140, 149, 25);
 
         PasswordField passwordText = new PasswordField();
         passwordText.setPadding(new Insets(5));
@@ -69,13 +54,8 @@ public class LoginPage {
             String enteredUsername = usernameText.getText().trim();
             String enteredPassword = passwordText.getText();
             try {
-                /*prepareStatement to avoid sql injection*/
-                Connection conn = DBConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("select * from insurance.employee where emp_id=? and password =?");
-                stmt.setString(1, enteredUsername);
-                stmt.setString(2, enteredPassword);
 
-                ResultSet resultSet = stmt.executeQuery();
+                ResultSet resultSet = DBConnection.LoginQuery(enteredUsername, enteredPassword);
 
                 if (resultSet.next()) {
                     emp = new Employee(resultSet.getString("emp_id"), Integer.parseInt(resultSet.getString("ssn")), resultSet.getString("first_name"), resultSet.getString("second_name"), resultSet.getString("third_name"), resultSet.getString("fourth_name"), Integer.parseInt(resultSet.getString("phone_1")), Integer.parseInt(resultSet.getString("phone_2")), resultSet.getString("dob"), resultSet.getString("password"));
@@ -87,9 +67,14 @@ public class LoginPage {
                     error.setContentText("Password or username is incorrect");
                     error.show();
                 }
-                stmt.close();
-                conn.close();
+
             } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            try {
+                DBConnection.stmt.close();
+                DBConnection.conn.close();
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
 
