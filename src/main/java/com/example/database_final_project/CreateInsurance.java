@@ -64,7 +64,11 @@ public class CreateInsurance {
         Button checkIDAndPhoneButton = Util.createButton("Check", 827, 28, 47, 25);
         Button searchButton = Util.createButton("search", 0, 0, 75, 25);
         Button addButton = Util.createButton("Add", 0, 0, 75, 25);
+
         addButton.setDisable(true);
+        checkIDAndPhoneButton.setDisable(true);
+        drivingImageButton.setDisable(true);
+        idImageButton.setDisable(true);
 
         refreshButton.setOnAction(refreshEvent -> {
             MenuPage.menuPageStage.close();
@@ -124,7 +128,6 @@ public class CreateInsurance {
                     resultSet = DBConnection.searchClient(idNumberField.getText());
                     alert.setTitle("Result");
                     if (resultSet.next()) {
-                        drivingImageButton.setDisable(true);
                         idImageButton.setDisable(true);
 
                         client = new Client(Integer.parseInt(resultSet.getString("ssn")), resultSet.getString("first_name"), resultSet.getString("second_name"), resultSet.getString("third_name"), resultSet.getString("fourth_name"), Integer.parseInt(resultSet.getString("phone_1")), Integer.parseInt(resultSet.getString("phone_2")), resultSet.getString("dob"));
@@ -142,7 +145,7 @@ public class CreateInsurance {
 
                     } else {
                         idImageButton.setDisable(false);
-                        drivingImageButton.setDisable(false);
+
                         alert.setAlertType(Alert.AlertType.ERROR);
                         alert.setContentText("The user does not exist in the database");
                         rootPane.getChildren().add(checkIDAndPhoneButton);
@@ -170,6 +173,7 @@ public class CreateInsurance {
             try {
                 idImage = Util.ReadImage(MenuPage.menuPageStage);
                 idImageRead = true;
+                drivingImageButton.setDisable(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -178,6 +182,7 @@ public class CreateInsurance {
             try {
                 drivingImage = Util.ReadImage(MenuPage.menuPageStage);
                 drivingImageRead = true;
+                checkIDAndPhoneButton.setDisable(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
