@@ -4,17 +4,17 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.nio.file.Files;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -24,6 +24,29 @@ public class Util {
     public static String name = "Tamkeen";
     public static Image icon = new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm());
     public static String style = Objects.requireNonNull(LoginPage.class.getResource("style.css")).toExternalForm();
+
+    public static AnchorPane thirdPane = new AnchorPane();
+    public static TextArea stepTextArea = new TextArea();
+
+    public static Alert alert = new Alert(Alert.AlertType.NONE);
+
+    public static void initializeThirdPane() {
+        thirdPane.getChildren().clear();
+        thirdPane.setLayoutX(27);
+        thirdPane.setLayoutY(60);
+        thirdPane.setPrefSize(1300, 483);
+        thirdPane.getStyleClass().add("pane-2");
+    }
+
+    public static void initializeStepTextArea(double width, double height, String text) {
+        stepTextArea.setPadding(new Insets(5));
+        stepTextArea.setEditable(false);
+        stepTextArea.setLayoutX(14);
+        stepTextArea.setLayoutY(14);
+        stepTextArea.setPrefSize(width, height);
+        stepTextArea.setText(text);
+
+    }
 
     public static Label createLabel(String text, double layoutX, double layoutY, double width, double height) {
         Label label = new Label(text);

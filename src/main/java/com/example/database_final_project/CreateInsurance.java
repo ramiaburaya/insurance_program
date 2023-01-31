@@ -13,7 +13,6 @@ public class CreateInsurance {
     private static int num = 0; // 1:one phone,2:two phone
     private static Client client;
     private final Car car = new Car();
-    private static final Alert alert = new Alert(Alert.AlertType.NONE);
     private static byte[] idImage;
     private static byte[] drivingImage;
     private static boolean drivingImageRead = false;
@@ -25,21 +24,9 @@ public class CreateInsurance {
     }
 
     public static AnchorPane ClientPane() {
-        AnchorPane rootPane = new AnchorPane();
-        rootPane.setLayoutX(27);
-        rootPane.setLayoutY(60);
-        rootPane.setPrefSize(1300, 483);
-        rootPane.getStyleClass().add("pane-2");
+        Util.initializeThirdPane();
 
-        rootPane.getChildren().clear();
-
-        TextArea stepTextArea = new TextArea();
-        stepTextArea.setPadding(new Insets(5));
-        stepTextArea.setEditable(false);
-        stepTextArea.setLayoutX(14);
-        stepTextArea.setLayoutY(14);
-        stepTextArea.setPrefSize(290, 234);
-        stepTextArea.setText("""
+        Util.initializeStepTextArea(290, 234, """
                                                    Step
                 -------------------------------------------------------
                 1- Enter Client ID
@@ -108,21 +95,25 @@ public class CreateInsurance {
 
         addButton.setOnAction(addEvent -> {
             if (Util.isEmptyField(firstNameField) || Util.isEmptyField(secondNameField) || Util.isEmptyField(thirdNameField)
-                    || Util.isEmptyField(lastNameField) || Util.isEmptyField(idNumberField) || Util.isEmptyField(phoneOneField)
-                    || !idImageRead || !drivingImageRead) {
-                alert.setAlertType(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Some data not entered");
-                alert.show();
+                || Util.isEmptyField(lastNameField) || Util.isEmptyField(idNumberField) || Util.isEmptyField(phoneOneField)
+                || !idImageRead || !drivingImageRead) {
+                Util.alert.setAlertType(Alert.AlertType.ERROR);
+                Util.alert.setTitle("Error");
+                Util.alert.setContentText("Some data not entered");
+                Util.alert.show();
             } else {
                 try {
                     DBConnection.insertClient(idNumberField.getText(), firstNameField.getText(), secondNameField.getText()
                             , thirdNameField.getText(), lastNameField.getText(), dateOfBirthPicker
                             , phoneOneField.getText(), phoneTwoField.getText(), idImage, drivingImage, num);
-
+                    Util.alert.setAlertType(Alert.AlertType.CONFIRMATION);
+                    Util.alert.setTitle("Successfully");
+                    Util.alert.setContentText("Client Added successfully");
+                    Util.alert.show();
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
+
             }
 
 
@@ -137,28 +128,28 @@ public class CreateInsurance {
         checkIDAndPhoneButton.setOnAction(checkIDAndPhoneEvent -> {
             if (phoneTwoCheckBox.selectedProperty().getValue()) {
                 if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
-                        && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))
-                        && (Util.isValid(phoneTwoField, 10) && Util.isInt(phoneTwoField))) {
+                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))
+                    && (Util.isValid(phoneTwoField, 10) && Util.isInt(phoneTwoField))) {
                     addButton.setDisable(false);
                     checkIDAndPhoneButton.setDisable(true);
                 } else {
-                    alert.setAlertType(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("check if the id number digit is : 9 And ( phone one and phone two number digit is :10 )");
-                    alert.show();
+                    Util.alert.setAlertType(Alert.AlertType.ERROR);
+                    Util.alert.setTitle("Error");
+                    Util.alert.setContentText("check if the id number digit is : 9 And ( phone one and phone two number digit is :10 )");
+                    Util.alert.show();
                 }
             } else {
                 if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
-                        && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))) {
+                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))) {
 
                     num = 1;
                     addButton.setDisable(false);
                     checkIDAndPhoneButton.setDisable(true);
                 } else {
-                    alert.setAlertType(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setContentText("check if the id number digit is : 9 And phone one number digit is :10 )");
-                    alert.show();
+                    Util.alert.setAlertType(Alert.AlertType.ERROR);
+                    Util.alert.setTitle("Error");
+                    Util.alert.setContentText("check if the id number digit is : 9 And phone one number digit is :10 )");
+                    Util.alert.show();
                 }
 
             }
@@ -168,7 +159,7 @@ public class CreateInsurance {
             if (!Util.isEmptyField(idNumberField)) {
                 try {
                     resultSet = DBConnection.searchClient(idNumberField.getText());
-                    alert.setTitle("Result");
+                    Util.alert.setTitle("Result");
                     if (resultSet.next()) {
                         idImageButton.setDisable(true);
 
@@ -180,19 +171,19 @@ public class CreateInsurance {
                         secondNameField.setText(resultSet.getString("second_name"));
                         thirdNameField.setText(resultSet.getString("third_name"));
                         lastNameField.setText(resultSet.getString("fourth_name"));
-                        alert.setAlertType(Alert.AlertType.INFORMATION);
-                        alert.setContentText("The user is in the database, you can add a new car");
+                        Util.alert.setAlertType(Alert.AlertType.INFORMATION);
+                        Util.alert.setContentText("The user is in the database, you can add a new car");
                         phoneOneField.setText("0" + resultSet.getString("phone_1"));
                         phoneTwoField.setText("0" + resultSet.getString("phone_2"));
 
                     } else {
                         idImageButton.setDisable(false);
 
-                        alert.setAlertType(Alert.AlertType.ERROR);
-                        alert.setContentText("The user does not exist in the database");
-                        rootPane.getChildren().add(checkIDAndPhoneButton);
+                        Util.alert.setAlertType(Alert.AlertType.ERROR);
+                        Util.alert.setContentText("The user does not exist in the database");
+                        Util.thirdPane.getChildren().add(checkIDAndPhoneButton);
                     }
-                    alert.show();
+                    Util.alert.show();
 
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
@@ -204,10 +195,10 @@ public class CreateInsurance {
                     System.out.println(e.getMessage());
                 }
             } else {
-                alert.setAlertType(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Please enter ID number of client before searching");
-                alert.show();
+                Util.alert.setAlertType(Alert.AlertType.ERROR);
+                Util.alert.setTitle("Error");
+                Util.alert.setContentText("Please enter ID number of client before searching");
+                Util.alert.show();
             }
         });
 
@@ -235,35 +226,23 @@ public class CreateInsurance {
         buttonBar.getButtons().addAll(addButton, searchButton);
 
 
-        rootPane.getChildren().addAll(stepTextArea, refreshButton, idNumberLabel, idNumberField, firstNameLabel, firstNameField, secondNameLabel, secondNameField, thirdNameLabel, thirdNameField, lastNameLabel, lastNameField, dateOfBirthLabel, dateOfBirthPicker, phoneOneLabel, phoneTwoCheckBox, phoneOneField, phoneTwoLabel, phoneTwoField, idImageLabel, idImageButton, drivingImageLabel, drivingImageButton, buttonBar);
-        return rootPane;
+        Util.thirdPane.getChildren().addAll(Util.stepTextArea, refreshButton, idNumberLabel, idNumberField, firstNameLabel, firstNameField, secondNameLabel, secondNameField, thirdNameLabel, thirdNameField, lastNameLabel, lastNameField, dateOfBirthLabel, dateOfBirthPicker, phoneOneLabel, phoneTwoCheckBox, phoneOneField, phoneTwoLabel, phoneTwoField, idImageLabel, idImageButton, drivingImageLabel, drivingImageButton, buttonBar);
+        return Util.thirdPane;
     }
 
 
     public static AnchorPane CarPane() {
-        AnchorPane rootPane = new AnchorPane();
-        rootPane.setLayoutX(27);
-        rootPane.setLayoutY(60);
-        rootPane.setPrefSize(1300, 483);
-        rootPane.getStyleClass().add("pane-2");
-
-        rootPane.getChildren().clear();
+        Util.initializeThirdPane();
 
 
-        return rootPane;
+        return Util.thirdPane;
     }
 
     public static AnchorPane DriverPane() {
-        AnchorPane rootPane = new AnchorPane();
-        rootPane.setLayoutX(27);
-        rootPane.setLayoutY(60);
-        rootPane.setPrefSize(1300, 483);
-        rootPane.getStyleClass().add("pane-2");
-
-        rootPane.getChildren().clear();
+        Util.initializeThirdPane();
 
 
-        return rootPane;
+        return Util.thirdPane;
     }
 
 

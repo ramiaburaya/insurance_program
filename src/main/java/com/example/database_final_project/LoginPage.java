@@ -62,10 +62,10 @@ public class LoginPage {
                     MenuPage.PrintMenuPage();
                     loginPageStage.close();
                 } else {
-                    Alert error = new Alert(Alert.AlertType.ERROR);
-                    error.setTitle("Error");
-                    error.setContentText("Password or username is incorrect");
-                    error.show();
+                    Util.alert.setAlertType(Alert.AlertType.ERROR);
+                    Util.alert.setTitle("Error");
+                    Util.alert.setContentText("Password or username is incorrect");
+                    Util.alert.show();
                 }
 
             } catch (Exception e) {

@@ -69,5 +69,22 @@ public class DBConnection {
         conn.close();
     }
 
+    public static void DeleteClientInsurance() throws SQLException {
+
+    }
+
+    public static ResultSet searchClientInsurance(String clientId, String insuranceId) throws SQLException {
+        conn = DBConnection.getConnection();
+
+
+        stmt = conn.prepareStatement("select C.first_name,C.ssn,I.car_id,R.model,I.insutance_type from " +
+                                     "client C,insurance I,car R where I.client_id= C.ssn and R.client_id= C.ssn " +
+                                     "and C.ssn=? and I.ins_id=?");
+        stmt.setString(1, clientId);
+        stmt.setString(2, insuranceId);
+
+        return stmt.executeQuery();
+
+    }
 }
 

@@ -16,8 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-import java.util.Objects;
-
 public class MenuPage {
     public static Stage menuPageStage = new Stage();
 
@@ -107,6 +105,7 @@ public class MenuPage {
         deleteButton.setOnAction(e -> {
 
             secondPane.getChildren().clear();
+            secondPane.getChildren().add(DeleteInsurance.deletePane());
             opField.setText("Delete Insurance");
         });
 
