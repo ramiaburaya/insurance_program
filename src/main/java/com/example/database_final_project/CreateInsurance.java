@@ -33,6 +33,27 @@ public class CreateInsurance {
 
         rootPane.getChildren().clear();
 
+        TextArea stepTextArea = new TextArea();
+        stepTextArea.setPadding(new Insets(5));
+        stepTextArea.setEditable(false);
+        stepTextArea.setLayoutX(14);
+        stepTextArea.setLayoutY(14);
+        stepTextArea.setPrefSize(290, 234);
+        stepTextArea.setText("""
+                                                   Step
+                -------------------------------------------------------
+                1- Enter Client ID
+                2- Search
+                3- User in Database move to car information
+                -------------------------------------------------------
+                4- User not in DataBase
+                5- Insert all information
+                6- phone should be 10 number
+                7- Click Check button
+                8- Click Add button
+                -------------------------------------------------------""");
+
+
         Label idNumberLabel = Util.createLabel("ID number", 485, 28, 93, 27);
         Label firstNameLabel = Util.createLabel("First name", 479, 75, 93, 27);
         Label secondNameLabel = Util.createLabel("Second name", 651, 75, 93, 27);
@@ -52,13 +73,23 @@ public class CreateInsurance {
         TextField phoneOneField = Util.createTextField("Phone one", 650, 250, 145, 27);
         TextField phoneTwoField = Util.createTextField("Phone two", 479, 313, 145, 27);
 
+
+        CheckBox phoneTwoCheckBox = new CheckBox();
+        phoneTwoCheckBox.setSelected(false);
+        phoneTwoCheckBox.setLayoutX(444);
+        phoneTwoCheckBox.setLayoutY(317);
+
+
+        phoneTwoField.editableProperty().bind(phoneTwoCheckBox.selectedProperty());
+
         DatePicker dateOfBirthPicker = new DatePicker();
         dateOfBirthPicker.setPadding(new Insets(5));
         dateOfBirthPicker.setPrefSize(145, 25);
         dateOfBirthPicker.setLayoutX(479);
         dateOfBirthPicker.setLayoutY(250);
 
-        Button refreshButton = Util.createButton("Refresh", 14, 16, 68, 25);
+
+        Button refreshButton = Util.createButton("Refresh", 14, 264, 68, 25);
         Button idImageButton = Util.createButton("ID image", 650, 312, 145, 25);
         Button drivingImageButton = Util.createButton("Driving image", 650, 364, 145, 25);
         Button checkIDAndPhoneButton = Util.createButton("Check", 827, 28, 47, 25);
@@ -104,21 +135,32 @@ public class CreateInsurance {
         });
 
         checkIDAndPhoneButton.setOnAction(checkIDAndPhoneEvent -> {
-            if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
-                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))
-                    && (Util.isValid(phoneTwoField, 10) && Util.isInt(phoneTwoField))) {
-                addButton.setDisable(false);
-                checkIDAndPhoneButton.setDisable(true);
-            } else if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
-                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))) {
-                num = 1;
-                addButton.setDisable(false);
-                checkIDAndPhoneButton.setDisable(true);
+            if (phoneTwoCheckBox.selectedProperty().getValue()) {
+                if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
+                        && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))
+                        && (Util.isValid(phoneTwoField, 10) && Util.isInt(phoneTwoField))) {
+                    addButton.setDisable(false);
+                    checkIDAndPhoneButton.setDisable(true);
+                } else {
+                    alert.setAlertType(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("check if the id number digit is : 9 And ( phone one and phone two number digit is :10 )");
+                    alert.show();
+                }
             } else {
-                alert.setAlertType(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("check if the id number digit is : 9 And phone number digit is :10");
-                alert.show();
+                if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
+                        && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))) {
+
+                    num = 1;
+                    addButton.setDisable(false);
+                    checkIDAndPhoneButton.setDisable(true);
+                } else {
+                    alert.setAlertType(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("check if the id number digit is : 9 And phone one number digit is :10 )");
+                    alert.show();
+                }
+
             }
         });
 
@@ -193,7 +235,7 @@ public class CreateInsurance {
         buttonBar.getButtons().addAll(addButton, searchButton);
 
 
-        rootPane.getChildren().addAll(refreshButton, idNumberLabel, idNumberField, firstNameLabel, firstNameField, secondNameLabel, secondNameField, thirdNameLabel, thirdNameField, lastNameLabel, lastNameField, dateOfBirthLabel, dateOfBirthPicker, phoneOneLabel, phoneOneField, phoneTwoLabel, phoneTwoField, idImageLabel, idImageButton, drivingImageLabel, drivingImageButton, buttonBar);
+        rootPane.getChildren().addAll(stepTextArea, refreshButton, idNumberLabel, idNumberField, firstNameLabel, firstNameField, secondNameLabel, secondNameField, thirdNameLabel, thirdNameField, lastNameLabel, lastNameField, dateOfBirthLabel, dateOfBirthPicker, phoneOneLabel, phoneTwoCheckBox, phoneOneField, phoneTwoLabel, phoneTwoField, idImageLabel, idImageButton, drivingImageLabel, drivingImageButton, buttonBar);
         return rootPane;
     }
 

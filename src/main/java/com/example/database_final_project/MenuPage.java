@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -45,9 +44,10 @@ public class MenuPage {
         icon.setLayoutX(1084);
         icon.setLayoutY(14);
         icon.setStyle("-fx-opacity: 0.7;");
-        icon.setImage(new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm()));
+        icon.setImage(Util.icon);
 
         Label op = Util.createLabel("The operation", 53, 36, 93, 27);
+
         TextField opField = Util.createTextField("The operation", 147, 37, 145, 27);
         opField.setEditable(false);
 
@@ -68,7 +68,6 @@ public class MenuPage {
             driversInfo.setCursor(Cursor.HAND);
             driversInfo.setTextFill(Paint.valueOf("#fffdfd"));
             driversInfo.getStyleClass().add("button");
-
 
             Button carInfo = new Button("Car Information");
             carInfo.setCursor(Cursor.HAND);
