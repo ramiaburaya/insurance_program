@@ -10,11 +10,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
-
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -128,4 +125,15 @@ public class Util {
         return null;
     }
 
+    public static void limitTextFieldLength(TextField textField, String ErrorText, int maxNumber) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > maxNumber) {
+                Util.alert.setTitle("Error");
+                Util.alert.setAlertType(Alert.AlertType.ERROR);
+                Util.alert.setContentText(ErrorText + ", digit count of entered number " + newValue.length());
+                Util.alert.show();
+            }
+        });
+
+    }
 }

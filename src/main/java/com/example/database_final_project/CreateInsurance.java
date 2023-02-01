@@ -61,6 +61,11 @@ public class CreateInsurance {
         TextField phoneTwoField = Util.createTextField("Phone two", 479, 313, 145, 27);
 
 
+        Util.limitTextFieldLength(idNumberField, "Client ID number is 9 Digit", 9);
+        Util.limitTextFieldLength(phoneOneField, "phone number is 10 Digit", 10);
+        Util.limitTextFieldLength(phoneOneField, "phone number is 10 Digit", 10);
+
+
         CheckBox phoneTwoCheckBox = new CheckBox();
         phoneTwoCheckBox.setSelected(false);
         phoneTwoCheckBox.setLayoutX(444);
@@ -95,8 +100,8 @@ public class CreateInsurance {
 
         addButton.setOnAction(addEvent -> {
             if (Util.isEmptyField(firstNameField) || Util.isEmptyField(secondNameField) || Util.isEmptyField(thirdNameField)
-                || Util.isEmptyField(lastNameField) || Util.isEmptyField(idNumberField) || Util.isEmptyField(phoneOneField)
-                || !idImageRead || !drivingImageRead) {
+                    || Util.isEmptyField(lastNameField) || Util.isEmptyField(idNumberField) || Util.isEmptyField(phoneOneField)
+                    || !idImageRead || !drivingImageRead) {
                 Util.alert.setAlertType(Alert.AlertType.ERROR);
                 Util.alert.setTitle("Error");
                 Util.alert.setContentText("Some data not entered");
@@ -128,8 +133,8 @@ public class CreateInsurance {
         checkIDAndPhoneButton.setOnAction(checkIDAndPhoneEvent -> {
             if (phoneTwoCheckBox.selectedProperty().getValue()) {
                 if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
-                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))
-                    && (Util.isValid(phoneTwoField, 10) && Util.isInt(phoneTwoField))) {
+                        && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))
+                        && (Util.isValid(phoneTwoField, 10) && Util.isInt(phoneTwoField))) {
                     addButton.setDisable(false);
                     checkIDAndPhoneButton.setDisable(true);
                 } else {
@@ -140,7 +145,7 @@ public class CreateInsurance {
                 }
             } else {
                 if ((Util.isValid(idNumberField, 9) && Util.isInt(idNumberField))
-                    && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))) {
+                        && (Util.isValid(phoneOneField, 10) && Util.isInt(phoneOneField))) {
 
                     num = 1;
                     addButton.setDisable(false);
@@ -189,7 +194,7 @@ public class CreateInsurance {
                     System.out.println(ex.getMessage());
                 }
                 try {
-                    DBConnection.stmt.close();
+                    DBConnection.preparedStatement.close();
                     DBConnection.conn.close();
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());

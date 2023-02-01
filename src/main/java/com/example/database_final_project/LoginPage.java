@@ -72,7 +72,7 @@ public class LoginPage {
                 System.out.println(e.getMessage());
             }
             try {
-                DBConnection.stmt.close();
+                DBConnection.preparedStatement.close();
                 DBConnection.conn.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
