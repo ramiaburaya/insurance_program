@@ -72,17 +72,15 @@ public class DBConnection {
         conn.close();
     }
 
-    public static void DeleteClientInsurance() throws SQLException {
-
-    }
-
     public static Record searchClientInsurance(String clientId, String insuranceId) throws SQLException {
         conn = DBConnection.getConnection();
 
+        String sql = """
+                Select client.first_name , client.ssn , insurance.car_id , car.model, insurance.ins_id,
+                insurance.insutance_type, insurance.start_date, insurance.end_date from client, insurance, car
+                 where insurance.client_id = client.ssn and car.client_id= client.ssn and client.ssn=? and insurance.ins_id=?""";
 
-        preparedStatement = conn.prepareStatement("select C.first_name as 'Name',C.ssn as 'Client ID' ,I.car_id as 'Car ID',R.model as 'Car Model'," +
-                "I.ins_id as 'Insurance ID' ,I.insutance_type as 'Insurance Type'" +
-                "from client C,insurance as I,car  R where  I.client_id= C.ssn and R.client_id= C.ssn and C.ssn=? and I.ins_id=?");
+        preparedStatement = conn.prepareStatement(sql);
 
         preparedStatement.setString(1, clientId);
         preparedStatement.setString(2, insuranceId);
@@ -91,7 +89,6 @@ public class DBConnection {
         Record record = new Record();
 
         if (s.next()) {
-            // Create a new list for each row of results
 
             record.clientName = s.getString(1);
             record.clientId = s.getString(2);
@@ -103,8 +100,9 @@ public class DBConnection {
             } else {
                 record.insuranceType = "Mandatory";
             }
+            record.startDate = s.getString(7);
+            record.endDate = s.getString(8);
 
-            // Add the row to the data list
         }
         return record;
 
@@ -114,8 +112,12 @@ public class DBConnection {
         conn = DBConnection.getConnection();
 
         ArrayList<Record> data = new ArrayList<>();
-        preparedStatement = conn.prepareStatement("Select  C.first_name as 'Name',C.ssn as 'Client ID' ,I.car_id as 'Car ID',R.model as 'Car Model'," + "I.ins_id as 'Insurance ID' ,I.insutance_type as 'Insurance Type'" +
-                "from client C,insurance I,car R  where C.ssn=? and I.client_id=C.ssn and R.client_id= C.ssn and R.car_id=I.car_id");
+        String sql = """
+                Select client.first_name , client.ssn , insurance.car_id , car.model, insurance.ins_id,
+                insurance.insutance_type, insurance.start_date, insurance.end_date from client, insurance, car
+                 where client.ssn=? and insurance.client_id = client.ssn and car.client_id= client.ssn and car.car_id=insurance.car_id""";
+
+        preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setString(1, clientId);
         ResultSet s = preparedStatement.executeQuery();
 
@@ -133,6 +135,9 @@ public class DBConnection {
             } else {
                 record.insuranceType = "Mandatory";
             }
+            record.startDate = s.getString(7);
+            record.endDate = s.getString(8);
+
             data.add(record);
         }
 
@@ -141,13 +146,17 @@ public class DBConnection {
     }
 
 
-    public static void deleteInsurance(String clientId, String insuranceId, String carId, int numberOfRecords) throws SQLException {
+    public static void deleteInsurance(String clientId, String carId, int numberOfRecords) throws SQLException {
+        //didn't delete well you should try it again
         conn = DBConnection.getConnection();
+
         if (numberOfRecords == 1) {
+
             statement = conn.createStatement();
             statement.executeUpdate("delete from client where ssn=" + clientId);
         } else if (numberOfRecords > 1) {
-            //TODO delete statement when the client have more than one car
+            statement = conn.createStatement();
+            statement.executeUpdate("delete from car where car_id='" + carId + "'");
         }
     }
 }

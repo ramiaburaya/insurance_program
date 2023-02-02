@@ -14,7 +14,7 @@ public class DeleteInsurance {
 
     public static AnchorPane deletePane() {
         Util.initializeThirdPane();
-        Util.initializeStepTextArea(310, 257, """
+        Util.initializeStepTextArea(310, 250, """
                                                    Step
                 -------------------------------------------------------
                 First Way
@@ -32,19 +32,19 @@ public class DeleteInsurance {
 
         ComboBox<String> wayComboBox = new ComboBox<>();
         wayComboBox.getItems().addAll("First Way", "Second Way");
-        wayComboBox.setLayoutX(341);
-        wayComboBox.setLayoutY(22);
-        wayComboBox.setPrefSize(150, 35);
+        wayComboBox.setLayoutX(106);
+        wayComboBox.setLayoutY(264);
+        wayComboBox.setPrefSize(150, 15);
         wayComboBox.setPromptText("Select way");
 
         wayComboBox.setPadding(new Insets(5));
-        Label clientIdLabel = Util.createLabel("Client ID", 341, 83, 94, 17);
-        Label insuranceIdLabel = Util.createLabel("Insurance ID", 341, 119, 94, 17);
-        Label carIDLabel = Util.createLabel("Car ID", 341, 153, 94, 17);
+        Label clientIdLabel = Util.createLabel("Client ID", 14, 316, 94, 17);
+        Label insuranceIdLabel = Util.createLabel("Insurance ID", 14, 358, 94, 17);
+        Label carIDLabel = Util.createLabel("Car ID", 14, 396, 94, 17);
 
-        TextField clientIDField = Util.createTextField("Client ID", 439, 83, 145, 27);
-        TextField insuranceIDField = Util.createTextField("Insurance ID", 439, 119, 145, 27);
-        TextField carIDField = Util.createTextField("Car Number", 439, 153, 145, 27);
+        TextField clientIDField = Util.createTextField("Client ID", 108, 316, 145, 27);
+        TextField insuranceIDField = Util.createTextField("Insurance ID", 108, 358, 145, 27);
+        TextField carIDField = Util.createTextField("Car Number", 108, 396, 145, 27);
         TextField numberOfRecordsField = Util.createTextField("Car Number", 0, 0, 0, 0);
 
         insuranceIDField.setEditable(false);
@@ -57,7 +57,7 @@ public class DeleteInsurance {
                 -> insuranceIDField.setEditable(newValue.equals("First Way")));
 
         Line line = new Line();
-        line.setLayoutX(623);
+        line.setLayoutX(318);
         line.setLayoutY(30);
         line.setStartX(27);
         line.setEndX(27);
@@ -67,9 +67,9 @@ public class DeleteInsurance {
         TableView<Record> table = new TableView<>();
         table.setPadding(new Insets(5));
         table.setEditable(false);
-        table.setLayoutX(663);
-        table.setLayoutY(22);
-        table.setPrefSize(624, 453);
+        table.setLayoutX(352);
+        table.setLayoutY(15);
+        table.setPrefSize(934, 453);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         table.setOnMouseClicked(tableEvent -> {
             if (tableEvent.getClickCount() == 2) {
@@ -79,6 +79,7 @@ public class DeleteInsurance {
                 clientIDField.setText(record.clientId);
             }
         });
+
         TableColumn<Record, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("clientName"));
 
@@ -101,12 +102,18 @@ public class DeleteInsurance {
         TableColumn<Record, String> insuranceTypeColumn = new TableColumn<>("Insurance Type");
         insuranceTypeColumn.setCellValueFactory(new PropertyValueFactory<>("insuranceType"));
 
+        TableColumn<Record, String> startDateColumn = new TableColumn<>("Start Date");
+        startDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
-        table.getColumns().addAll(nameColumn, clientIdColumn, carIdColumn, carModelColumn, insuranceIdColumn, insuranceTypeColumn);
+        TableColumn<Record, String> endDateColumn = new TableColumn<>("End Date");
+        endDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
-        Button searchButton = Util.createButton("Search", 504, 229, 80, 25);
+        table.getColumns().addAll(nameColumn, clientIdColumn, carIdColumn, carModelColumn, insuranceIdColumn
+                , insuranceTypeColumn, startDateColumn, endDateColumn);
 
-        Button deleteButton = Util.createButton("Delete", 341, 229, 80, 25);
+        Button searchButton = Util.createButton("Search", 181, 432, 80, 25);
+
+        Button deleteButton = Util.createButton("Delete", 21, 432, 80, 25);
         deleteButton.setDisable(true);
 
 
@@ -118,16 +125,18 @@ public class DeleteInsurance {
                         if (Util.isValid(clientIDField, 9) && Util.isValid(insuranceIDField, 10)) {
                             if (Util.isInt(clientIDField)) {
                                 try {
-                                    numberOfRecordsField.setText("1");
                                     Record record = DBConnection.searchClientInsurance(clientIDField.getText(), insuranceIDField.getText());
+                                    numberOfRecordsField.setText("1");
                                     table.getItems().add(record);
-                                    carIDField.setText(record.carID);
                                     nameColumn.setResizable(false);
                                     clientIdColumn.setResizable(false);
                                     carIdColumn.setResizable(false);
                                     carModelColumn.setResizable(false);
                                     insuranceIdColumn.setResizable(false);
                                     insuranceTypeColumn.setResizable(false);
+                                    startDateColumn.setResizable(false);
+                                    endDateColumn.setResizable(false);
+
                                     deleteButton.setDisable(false);
                                 } catch (SQLException e) {
                                     System.out.println(e.getMessage());
@@ -171,6 +180,8 @@ public class DeleteInsurance {
                             carModelColumn.setResizable(false);
                             insuranceIdColumn.setResizable(false);
                             insuranceTypeColumn.setResizable(false);
+                            startDateColumn.setResizable(false);
+                            endDateColumn.setResizable(false);
                             deleteButton.setDisable(false);
                         } catch (SQLException e) {
                             System.out.println(e.getMessage());
@@ -199,7 +210,7 @@ public class DeleteInsurance {
         deleteButton.setOnAction(deleteEvent -> {
             if (!Util.isEmptyField(clientIDField) && !Util.isEmptyField(carIDField) && !Util.isEmptyField(insuranceIDField)) {
                 try {
-                    DBConnection.deleteInsurance(clientIDField.getText(), carIDField.getText(), insuranceIDField.getText()
+                    DBConnection.deleteInsurance(clientIDField.getText(), carIDField.getText()
                             , Integer.parseInt(numberOfRecordsField.getText()));
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());

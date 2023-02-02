@@ -8,23 +8,13 @@ public class Record {
     public String carModel = "";
     public String insuranceId = "";
     public String insuranceType = "";
+    public String startDate = "";
+    public String endDate = "";
+
 
     public String getClientId() {
         return clientId;
     }
-
-    @Override
-    public String toString() {
-        return "Record{" +
-                "clientId='" + clientId + '\'' +
-                ", clientName='" + clientName + '\'' +
-                ", carID='" + carID + '\'' +
-                ", carModel='" + carModel + '\'' +
-                ", insuranceId='" + insuranceId + '\'' +
-                ", insuranceType='" + insuranceType + '\'' +
-                '}';
-    }
-
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
@@ -67,5 +57,35 @@ public class Record {
 
     public void setInsuranceType(String insuranceType) {
         this.insuranceType = insuranceType;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Record{" +
+                "clientId='" + clientId + '\'' +
+                ", clientName='" + clientName + '\'' +
+                ", carID='" + carID + '\'' +
+                ", carModel='" + carModel + '\'' +
+                ", insuranceId='" + insuranceId + '\'' +
+                ", insuranceType='" + insuranceType + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                '}';
     }
 }
