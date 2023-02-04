@@ -2,8 +2,13 @@
 constraint pk_tableName 
 constraint mainTable_referencesTable_FK
 date syntax: 'yyyy-mm-dd'
+phone defualt is 0 
+ssn : 9 digit
+phone 10 digit
+ins_id is 10 digit
+car_id at least 10
 */
-
+drop database insurance;
 /* create database*/
 create database insurance;
 
@@ -16,41 +21,42 @@ first_name varchar(30),
 second_name varchar(20),
 third_name varchar(20),
 fourth_name varchar(20),
-phone_1 int,
-phone_2 int,
+phone_1 int NULL DEFAULT 0,
+phone_2 int NULL DEFAULT 0,
 dob date,
-ssn_image blob,
-driving_license blob,
+ssn_image LONGBLOB,
+driving_license LONGBLOB,
 constraint pk_client primary key(ssn)
 );
 
 /* add some data*/
+
 insert into client (ssn,first_name, second_name, third_name, fourth_name,dob,phone_1,phone_2) values
+(404818155,'Charlotte', 'Noah', 'Benjamin', 'Natalie','1991-01-16',0592624448,0),
 (101234567,'Nora', 'Liam', 'Ethan', 'Olivia','1979-08-11',0590123456,0560123457),
-(551818404,'Madison', 'Matthew', 'Joseph', 'Madison','1993-10-07',0592624440,null),
+(551818404,'Madison', 'Matthew', 'Joseph', 'Madison','1993-10-07',0592624440,0),
 (238456790,'Isabella', 'Benjamin', 'Alexander', 'Sophia','1980-06-24',0598765432,0568765431),
-(998686604,'Emily', 'Samuel', 'Ethan', 'Avery','1992-11-22',0592624442,null),
-(404818155,'Charlotte', 'Noah', 'Benjamin', 'Natalie','1991-01-16',0592624448,null),
+(998686604,'Emily', 'Samuel', 'Ethan', 'Avery','1992-11-22',0592624442,0),
 (907654832,'Avery', 'William', 'Michael', 'Abigail','1981-05-07',0593456789,0560456789),
 (456789012,'Madison', 'Jacob', 'Daniel', 'Elizabeth','1982-03-20',0598654321,0567654389),
-(482956575,'Charlotte', 'Noah', 'Benjamin', 'Isabella','1999-12-19',0562345671,null),
-(901234567,'Harper', 'Elijah', 'Daniel', 'Olivia','1998-02-14',0593456772,null),
-(765432109,'Olivia', 'Liam', 'Ethan', 'Sophia','1997-03-29',0563456773,null),
+(482956575,'Charlotte', 'Noah', 'Benjamin', 'Isabella','1999-12-19',0562345671,0),
+(901234567,'Harper', 'Elijah', 'Daniel', 'Olivia','1998-02-14',0593456772,0),
+(765432109,'Olivia', 'Liam', 'Ethan', 'Sophia','1997-03-29',0563456773,0),
 (678901235,'Harper', 'Matthew', 'Joseph', 'Mia','1983-02-02',0591234567,0561234568),
 (531209876,'Emily', 'Samuel', 'Ethan', 'Avery','1984-12-16',0592345678,0562345679),
 (532109876,'Charlotte', 'Noah', 'Benjamin', 'Natalie','1985-10-30',0593456780,0563456781),
-(423098765,'Harper', 'Elijah', 'Daniel', 'Isabella','1990-03-05',0599757665,null),
+(423098765,'Harper', 'Elijah', 'Daniel', 'Isabella','1990-03-05',0599757665,0),
 (789012345,'Harper', 'Elijah', 'Daniel', 'Isabella','1986-09-12',0594567890,0564567891),
-(123456789,'Sophia', 'Benjamin', 'Alexander', 'Abigail','1996-05-17',0594567874,null),
+(123456789,'Sophia', 'Benjamin', 'Alexander', 'Abigail','1996-05-17',0594567874,0),
 (543210987,'Olivia', 'Liam', 'Ethan', 'Madison','1987-07-26',0590123450,0560123451),
 (890123456,'Sophia', 'Benjamin', 'Alexander', 'Avery','1988-06-09',0598765430,0568765439),
-(406686899,'Abigail', 'William', 'Michael', 'Elizabeth','1995-07-03',0564567875,null),
-(345678901,'Elizabeth', 'Jacob', 'Daniel', 'Harper','1994-08-20',0569757661,null),
+(406686899,'Abigail', 'William', 'Michael', 'Elizabeth','1995-07-03',0564567875,0),
+(345678901,'Elizabeth', 'Jacob', 'Daniel', 'Harper','1994-08-20',0569757661,0),
 (103456789,'Abigail', 'William', 'Michael', 'Harper','2003-06-25',0593456788,0560456787),
 (987654301,'Elizabeth', 'Jacob', 'Daniel', 'Mia','2002-08-12',0598654320,0567654388),
 (234567890,'Madison', 'Matthew', 'Joseph', 'Emily','2001-09-21',0591234560,0561234569),
-(575659284,'Emily', 'Samuel', 'Ethan', 'Natalie','2000-11-07',0592345670,null),
-(567890234,'Olivia', 'Liam', 'Ethan', 'Sophia','1989-04-22',059531424,null);
+(575659284,'Emily', 'Samuel', 'Ethan', 'Natalie','2000-11-07',0592345670,0),
+(567890234,'Olivia', 'Liam', 'Ethan', 'Sophia','1989-04-22',059531424,0);
 
 
 /* Create table of car*/
@@ -58,9 +64,9 @@ create table car(
 car_id varchar(255) not null,
 client_id int not null,
 model text,
-engin_size int,
+engin_size int not null,
 color varchar(20),
-car_license blob,
+car_license LONGBLOB,
 license_end  date,
 model_date year,
 price double,
@@ -68,8 +74,13 @@ constraint  pk_car primary key (car_id),
 constraint car_client_FK foreign key(client_id) references client(ssn) on delete CASCADE ON update CASCADE
 );
 
-/*add some data to car client*/
+
+/*add some data to car client
+*/
+
 insert into car(car_id,client_id,model,engin_size,color,model_date,price,license_end) values
+('B7Y58A103694Z2',404818155,'Subaru Outback',2500,'Gold','2002',120000,'2023-06-15'),
+('M95403EDC0F728',404818155,'Nissan Altima',2500,'black','2004',135000,'2023-05-15'),
 ('C89B364A701D52',101234567,'Ford Mustang',2300,'black','2017',130000,'2024-01-15'),
 ('E8D109473G62F5',551818404,'Volkswagen Jetta',1400,'red','2015',110000,'2023-12-27'),
 ('H4505916G83I7J',551818404,'Chevrolet Impala',2500,'white','2018',120000,'2023-8-03'),
@@ -77,8 +88,6 @@ insert into car(car_id,client_id,model,engin_size,color,model_date,price,license
 ('CO562943781MNP',238456790,'Hyundai Sonata',2400,'Blue','2023',115000,'2024-01-02'),
 ('V28SR6QT109357',238456790,'Toyota Corolla',1800,'black','2016',100000,'2023-04-30'),
 ('U015897W246V3X',998686604,'Honda Civic',2000,'white','2001',105000,'2023-06-01'),
-('B7Y58A103694Z2',404818155,'Subaru Outback',2500,'Gold','2002',120000,'2023-06-15'),
-('M95403EDC0F728',404818155,'Nissan Altima',2500,'black','2004',135000,'2023-05-15'),
 ('N5F9HI0418736G',907654832,'Ram',1500,'green','2013',170000,'2024-02-02'),
 ('J14836L5270MK9',456789012,'Jeep Cherokee',2400,'black','2020',140000,'2024-01-26'),
 ('CN7009O4P315M6',456789012,'Ford Edge',2000,'Blue','2010',160000,'2023-08-03'),
@@ -108,16 +117,15 @@ insert into car(car_id,client_id,model,engin_size,color,model_date,price,license
 ('MNO903174856',575659284,'Ford Fusion',1200,'sliver','2005',24000,'2024-01-01'),
 ('QRS675823490',567890234,'Nissan Rogue',2500,'black','2018',195000,'2023-07-22');
 
-
 /*Create table of insurance */
-/*ins_id : last 5 number of client_id and first 5 number of car_id*/
+/*ins_id (): last 5 number of client_id and first 5 number of car_id*/
 /*end date of inurance is the end date of car_license*/
 /*insutance_type: A shamel, B not shmael*/
 create table insurance(
 ins_id varchar(10),
-start_date date,
+start_date DATETIME NOT NULL DEFAULT NOW(),
 end_date date,
-insutance_type  varchar(30),
+insutance_type  varchar(1),
 car_id varchar(255) not null,
 client_id int not null,
 price decimal,
@@ -126,9 +134,11 @@ constraint car_insurance_FK foreign key(car_id) references car(car_id) on delete
 constraint client_insurance_FK foreign key(client_id) references client(ssn) on delete CASCADE ON update CASCADE
 );
 
-
 /*add some data to insurance*/
+
 insert into insurance(ins_id,start_date,end_date,insutance_type,car_id,client_id,price) values
+('18155B7Y58', '2022-06-15' , '2023-06-15','B','B7Y58A103694Z2',404818155,1690),
+('18155M9540', '2022-12-15' , '2023-05-15','B','M95403EDC0F728',404818155,1690),
 ('34567C89B3', '2023-01-15' , '2024-01-15','A','C89B364A701D52',101234567,3965),
 ('18404E8D10', '2022-12-27' , '2023-12-27','B','E8D109473G62F5',551818404,1035),
 ('18404H4505', '2022-08-03' , '2023-8-03','A','H4505916G83I7J',551818404,3790),
@@ -136,8 +146,6 @@ insert into insurance(ins_id,start_date,end_date,insutance_type,car_id,client_id
 ('56790CO562', '2023-01-02' , '2024-01-02','A','CO562943781MNP',238456790,3702),
 ('56790V28SR', '2022-04-30' , '2023-04-30','A','V28SR6QT109357',238456790,3090),
 ('86604U0158', '2023-01-01' , '2023-06-01','B','U015897W246V3X',998686604,1340),
-('18155B7Y58', '2022-06-15' , '2023-06-15','B','B7Y58A103694Z2',404818155,1690),
-('18155M9540', '2022-12-15' , '2023-05-15','B','M95403EDC0F728',404818155,1690),
 ('54832N5F9H', '2023-02-02' , '2024-02-02','A','N5F9HI0418736G',907654832,4010),
 ('89012J1483', '2023-01-26' , '2024-01-26','A','J14836L5270MK9',456789012,4140),
 ('89012CN700', '2022-08-03' , '2023-08-03','A','CN7009O4P315M6',456789012,4140),
@@ -167,7 +175,6 @@ insert into insurance(ins_id,start_date,end_date,insutance_type,car_id,client_id
 ('59284MNO90', '2023-01-01' , '2024-01-01','B','MNO903174856',575659284,1035),
 ('90234QRS67', '2022-07-22' , '2023-07-22','A','QRS675823490',567890234,5102);
 
-
 /* Create table of employee*/
 /*defualt password id ssn id*/
 create table employee(
@@ -177,21 +184,22 @@ first_name varchar(20),
 second_name varchar(20),
 third_name varchar(20),
 fourth_name varchar(20),
-phone_1 int,
-phone_2 int,
+phone_1 int NULL DEFAULT 0,
+phone_2 int NULL DEFAULT 0,
 dob date,
-ssn_image  blob,
+ssn_image  LONGBLOB,
 password text,
 constraint pk_employee primary key(emp_id)
 );
 
 /*Add some data*/
 insert into employee(emp_id,ssn,first_name,second_name,third_name,fourth_name,phone_1,phone_2,dob,password) values
-('4545AAA',48471557,'ahmad','burhan','khalil','aburayya',0568188407,null,'2000-07-30',48471557),
-('4585AAB',14836985,'mohammad','manhal','hasan','abusaleh',0597880687,null,'2002-03-17',14836985),
-('4545AAC',32189495,'ameer','mohammad','mahmmod','karaja',056188207,null,'2003-9-11',32189495);
- 
-select * from employee where emp_id='4545AAA' and password =48471557
+('4545AAA',48471557,'ahmad','burhan','khalil','aburayya',0568188407,0,'2000-07-30',48471557),
+('4585AAB',14836985,'mohammad','manhal','hasan','abusaleh',0597880687,0,'2002-03-17',14836985),
+('4545AAC',32189495,'ameer','mohammad','mahmmod','karaja',056188207,0,'2003-9-11',32189495),
+('rami',404818155,'rami','burahn','khalil','aburayya',0566677858,0,'2002-04-30','rami');
+
+
 /*create table of drivers */
 create table driver(
 ssn int,
@@ -200,7 +208,7 @@ second_name varchar(20),
 third_name varchar(20),
 fourth_name varchar(20),
 dob date,
-driving_license blob,
+driving_license longblob,
 constraint driver_pk primary key(ssn)
 );
 
@@ -214,8 +222,6 @@ constraint driver_insurance_driver_FK foreign key(driver_id) references driver(s
 constraint driver_insurance_insurance_FK foreign key(ins_id) references insurance(ins_id) on delete CASCADE ON update CASCADE,
 constraint driver_insurance_pk primary key(driver_id,ins_id) 
 );
-
-
 
 
 
