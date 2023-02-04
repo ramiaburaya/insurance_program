@@ -1,3 +1,5 @@
+/*Rami*/
+
 package com.example.database_final_project;
 
 import javafx.geometry.Insets;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/*Rami*/
 public class CreateInsurance {
     private static int num = 0; // 1:one phone,2:two phone
     private static final Client client = new Client();
@@ -26,6 +29,7 @@ public class CreateInsurance {
 
     }
 
+    /*Rami*/
     public static AnchorPane ClientPane() {
         Util.initializeThirdPane();
 
@@ -262,7 +266,7 @@ public class CreateInsurance {
         return Util.thirdPane;
     }
 
-
+    /*Rami*/
     public static AnchorPane CarPane() {
         Util.initializeThirdPane();
 

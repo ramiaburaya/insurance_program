@@ -1,3 +1,5 @@
+/*Rami*/
+
 package com.example.database_final_project;
 
 import javafx.geometry.Insets;
@@ -157,6 +159,11 @@ public class Util {
             return 340;
         else
             return 1690;
+    }
+
+    public static String generateInsuranceID(String clientId, String carId) {
+        /*ins_id (): last 5 number of client_id and first 5 number of car_id*/
+            return  clientId.substring(clientId.length() - 5) + carId.substring(0, 5);
     }
 
 }

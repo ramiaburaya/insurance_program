@@ -1,3 +1,4 @@
+/*Rami*/
 package com.example.database_final_project;
 
 public abstract class Person {
@@ -10,6 +11,15 @@ public abstract class Person {
     private int phone_2;
 
     private String date;
+
+    public Person(int ssn, String firstName, String secondName, String thirdName, String fourthName, String date) {
+        this.ssn = ssn;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.thirdName = thirdName;
+        this.fourthName = fourthName;
+        this.date = date;
+    }
 
     public Person(int ssn, String firstName, String secondName, String thirdName, String fourthName, int phone_1, int phone_2, String date) {
         this.ssn = ssn;
@@ -78,7 +88,7 @@ public abstract class Person {
         this.phone_2 = phone_2;
     }
 
-    public Person( ) {
+    public Person() {
     }
 
     public String getDate() {

@@ -204,12 +204,10 @@ public class DBConnection {
     private static void insertInsurance(String carId, String clientID, String insurancePrice, String insuranceType, String licenseEnd) throws SQLException {
         String insertInsuranceSql = "INSERT INTO insurance (ins_id, end_date, insutance_type, car_id, client_id, price) " +
                 "VALUES (?, ?, ?, ?, ?, ?);";
-        /*ins_id (): last 5 number of client_id and first 5 number of car_id*/
-        String insId = clientID.substring(clientID.length() - 5) + carId.substring(0, 5);
 
         conn = DBConnection.getConnection();
         preparedStatement = conn.prepareStatement(insertInsuranceSql);
-        preparedStatement.setString(1, insId);
+        preparedStatement.setString(1, Util.generateInsuranceID(clientID, carId));
         preparedStatement.setString(2, licenseEnd);
         if (insuranceType.equals("Shamel")) {
             preparedStatement.setString(3, "A");
