@@ -78,6 +78,9 @@ public abstract class Person {
         this.phone_2 = phone_2;
     }
 
+    public Person( ) {
+    }
+
     public String getDate() {
         return date;
     }

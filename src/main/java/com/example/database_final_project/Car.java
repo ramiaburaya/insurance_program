@@ -6,10 +6,9 @@ public class Car {
     private String clientID;
     private String model;
     private String color;
-
+    private double  engineSize;
     private String licenseEnd;
     private String modelDate;
-
     private double price;
     public Car() {
     }
@@ -35,7 +34,13 @@ public class Car {
     public String getClientID() {
         return clientID;
     }
+    public double getEngineSize() {
+        return engineSize;
+    }
 
+    public void setEngineSize(double engineSize) {
+        this.engineSize = engineSize;
+    }
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }

@@ -62,16 +62,18 @@ public class MenuPage {
             clientInfo.setTextFill(Paint.valueOf("#fffdfd"));
             clientInfo.getStyleClass().add("button");
 
+
             Button driversInfo = new Button("Driver Information");
             driversInfo.setCursor(Cursor.HAND);
             driversInfo.setTextFill(Paint.valueOf("#fffdfd"));
             driversInfo.getStyleClass().add("button");
+            driversInfo.setDisable(true);
 
             Button carInfo = new Button("Car Information");
             carInfo.setCursor(Cursor.HAND);
             carInfo.setTextFill(Paint.valueOf("#fffdfd"));
             carInfo.getStyleClass().add("button");
-
+            carInfo.setDisable(true);
             ButtonBar createButtonsPane = Util.createButtonBar(479, 14, 396, 40, 70);
             createButtonsPane.getButtons().addAll(clientInfo, carInfo, driversInfo);
 
@@ -79,6 +81,7 @@ public class MenuPage {
             clientInfo.setOnAction(clientEvent -> {
                 secondPane.getChildren().clear();
                 secondPane.getChildren().addAll(createButtonsPane, CreateInsurance.ClientPane());
+                carInfo.setDisable(false);
             });
 
             carInfo.setOnAction(carEvent -> {
@@ -86,7 +89,7 @@ public class MenuPage {
 
                 secondPane.getChildren().addAll(createButtonsPane, CreateInsurance.CarPane());
 
-
+                driversInfo.setDisable(false);
             });
 
             driversInfo.setOnAction(driverEvent -> {

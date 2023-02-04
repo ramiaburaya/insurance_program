@@ -136,4 +136,27 @@ public class Util {
         });
 
     }
+
+    public static int cacluatePrice(String insuranceType, int engineSize, int carPrice) {
+        if (insuranceType.equals("Shamel")) {
+            if ((0.0175 * carPrice) < 1000) {
+                return priceOfEngineSize(engineSize) + 1000;
+            } else {
+                return (int) (priceOfEngineSize(engineSize) + (0.0175 * carPrice));
+            }
+        } else
+            return priceOfEngineSize(engineSize);
+    }
+
+    private static int priceOfEngineSize(int engineSize) {
+        if (engineSize <= 1000)
+            return 935;
+        else if (engineSize > 1000 && engineSize <= 1500)
+            return 1035;
+        else if (engineSize > 1500 && engineSize <= 2000)
+            return 340;
+        else
+            return 1690;
+    }
+
 }

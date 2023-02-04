@@ -7,6 +7,10 @@ public class Client extends Person {
                 , phone_1, phone_2, date);
     }
 
+    public Client() {
+
+    }
+
 
     @Override
     public String toString() {

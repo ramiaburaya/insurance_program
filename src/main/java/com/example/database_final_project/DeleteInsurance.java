@@ -36,8 +36,8 @@ public class DeleteInsurance {
         wayComboBox.setLayoutY(264);
         wayComboBox.setPrefSize(150, 15);
         wayComboBox.setPromptText("Select way");
-
         wayComboBox.setPadding(new Insets(5));
+
         Label clientIdLabel = Util.createLabel("Client ID", 14, 316, 94, 17);
         Label insuranceIdLabel = Util.createLabel("Insurance ID", 14, 358, 94, 17);
         Label carIDLabel = Util.createLabel("Car ID", 14, 396, 94, 17);
@@ -74,9 +74,11 @@ public class DeleteInsurance {
         table.setOnMouseClicked(tableEvent -> {
             if (tableEvent.getClickCount() == 2) {
                 Record record = table.getFocusModel().getFocusedItem();
-                carIDField.setText(record.carID);
-                insuranceIDField.setText(record.insuranceId);
-                clientIDField.setText(record.clientId);
+                if (record != null) {
+                    carIDField.setText(record.carID);
+                    insuranceIDField.setText(record.insuranceId);
+                    clientIDField.setText(record.clientId);
+                }
             }
         });
 

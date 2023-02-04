@@ -1,3 +1,4 @@
+/*Rami*/
 package com.example.database_final_project;
 
 import javafx.scene.control.DatePicker;
@@ -26,6 +27,7 @@ public class DBConnection {
         return connection;
     }
 
+    // login page
     public static ResultSet LoginQuery(String enteredUsername, String enteredPassword) throws SQLException {
         /*prepareStatement to avoid sql injection*/
         conn = DBConnection.getConnection();
@@ -38,6 +40,7 @@ public class DBConnection {
 
     }
 
+    //Create insurance Page
     public static ResultSet searchClient(String idNumber) throws SQLException {
         conn = DBConnection.getConnection();
 
@@ -47,7 +50,8 @@ public class DBConnection {
         return preparedStatement.executeQuery();
     }
 
-    public static void insertClient(String idNumber, String firstName, String secondName, String thirdName, String lastName, DatePicker dateOfBirth, String phoneOne, String phoneTwo, byte[] idImage, byte[] drivingImage, int numberOfPhone) throws SQLException {
+    //Create insurance Page
+    public static ResultSet insertClient(String idNumber, String firstName, String secondName, String thirdName, String lastName, DatePicker dateOfBirth, String phoneOne, String phoneTwo, byte[] idImage, byte[] drivingImage, int numberOfPhone) throws SQLException {
         conn = DBConnection.getConnection();
 
         preparedStatement = conn.prepareStatement("insert into client (ssn,first_name, second_name, third_name, fourth_name,dob,phone_1,phone_2,ssn_image,driving_license) values (?,?,?,?,?,?,?,?,?,?)");
@@ -70,8 +74,10 @@ public class DBConnection {
         preparedStatement.executeUpdate();
         preparedStatement.close();
         conn.close();
+        return searchClient(idNumber);
     }
 
+    // Delete Page
     public static Record searchClientInsurance(String clientId, String insuranceId) throws SQLException {
         conn = DBConnection.getConnection();
 
@@ -108,6 +114,7 @@ public class DBConnection {
 
     }
 
+    // Delete Page
     public static ArrayList<Record> searchClientToDelete(String clientId) throws SQLException {
         conn = DBConnection.getConnection();
 
@@ -145,9 +152,8 @@ public class DBConnection {
 
     }
 
-
+    // Delete Page
     public static void deleteInsurance(String clientId, String carId, int numberOfRecords) throws SQLException {
-        //didn't delete well you should try it again
         conn = DBConnection.getConnection();
 
         if (numberOfRecords == 1) {
@@ -158,6 +164,65 @@ public class DBConnection {
             statement = conn.createStatement();
             statement.executeUpdate("delete from car where car_id='" + carId + "'");
         }
+        preparedStatement.close();
+        conn.close();
+    }
+
+    //create insurance page
+    public static ResultSet searchForCar(String carId, String clientID) throws SQLException {
+        conn = DBConnection.getConnection();
+        preparedStatement = conn.prepareStatement("select * from car where car_id=? and client_id=?");
+        preparedStatement.setString(1, carId);
+        preparedStatement.setString(2, clientID);
+        return preparedStatement.executeQuery();
+    }
+
+    //create insurance page
+    public static ResultSet insertCar(String carId, String clientID, String model, String enginSize, byte[] carLicense, DatePicker licenseEnd,
+                                      String modelDate, String price, String insurancePrice, String insuranceType, String color) throws SQLException {
+        String insertCarSql = "INSERT INTO car (car_id, client_id, model, engin_size, color, car_license, license_end, model_date, price) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        conn = DBConnection.getConnection();
+        preparedStatement = conn.prepareStatement(insertCarSql);
+        preparedStatement.setString(1, carId);
+        preparedStatement.setString(2, clientID);
+        preparedStatement.setString(3, model);
+        preparedStatement.setString(4, enginSize);
+        preparedStatement.setString(5, color);
+        preparedStatement.setString(6, Arrays.toString(carLicense));
+        preparedStatement.setString(7, String.valueOf(Util.formatterDate(licenseEnd)));
+        preparedStatement.setString(8, modelDate);
+        preparedStatement.setString(9, price);
+        preparedStatement.executeUpdate();
+        insertInsurance(carId, clientID, insurancePrice, insuranceType, String.valueOf(Util.formatterDate(licenseEnd)));
+        preparedStatement.close();
+        conn.close();
+        return searchForCar(carId, clientID);
+    }
+
+    //create insurance page
+    private static void insertInsurance(String carId, String clientID, String insurancePrice, String insuranceType, String licenseEnd) throws SQLException {
+        String insertInsuranceSql = "INSERT INTO insurance (ins_id, end_date, insutance_type, car_id, client_id, price) " +
+                "VALUES (?, ?, ?, ?, ?, ?);";
+        /*ins_id (): last 5 number of client_id and first 5 number of car_id*/
+        String insId = clientID.substring(clientID.length() - 5) + carId.substring(0, 5);
+
+        conn = DBConnection.getConnection();
+        preparedStatement = conn.prepareStatement(insertInsuranceSql);
+        preparedStatement.setString(1, insId);
+        preparedStatement.setString(2, licenseEnd);
+        if (insuranceType.equals("Shamel")) {
+            preparedStatement.setString(3, "A");
+        } else {
+            preparedStatement.setString(3, "B");
+        }
+        preparedStatement.setString(4, carId);
+        preparedStatement.setString(5, clientID);
+        preparedStatement.setString(6, insurancePrice);
+
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        conn.close();
     }
 }
 
