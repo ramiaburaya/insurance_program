@@ -18,12 +18,22 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-
+/**
+ * this class used for the most codes deduplicated in Whole project
+ * if any codes deduplicated more than two time , implement method here of the  deduplicated codes
+ */
 public class Util {
     public static String name = "Tamkeen";
-    public static Image icon = new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm());
-    public static String style = Objects.requireNonNull(LoginPage.class.getResource("style.css")).toExternalForm();
 
+    /**
+     * icon of Program
+     */
+    public static Image icon = new Image(Objects.requireNonNull(LoginPage.class.getResource("tamkeen.jpg")).toExternalForm());
+
+    /**
+     * StyleSheet
+     */
+    public static String style = Objects.requireNonNull(LoginPage.class.getResource("style.css")).toExternalForm();
     public static AnchorPane thirdPane = new AnchorPane();
     public static TextArea stepTextArea = new TextArea();
 
@@ -151,7 +161,7 @@ public class Util {
     }
 
     private static int priceOfEngineSize(int engineSize) {
-        if (engineSize <= 1000)
+        if (engineSize >= 850 && engineSize <= 1000)
             return 935;
         else if (engineSize > 1000 && engineSize <= 1500)
             return 1035;
@@ -163,7 +173,7 @@ public class Util {
 
     public static String generateInsuranceID(String clientId, String carId) {
         /*ins_id (): last 5 number of client_id and first 5 number of car_id*/
-            return  clientId.substring(clientId.length() - 5) + carId.substring(0, 5);
+        return clientId.substring(clientId.length() - 5) + carId.substring(0, 5);
     }
 
 }
