@@ -20,7 +20,7 @@ import java.util.Objects;
 
 /**
  * this class used for the most codes deduplicated in Whole project
- * if any codes deduplicated more than two time , implement method here of the  deduplicated codes,
+ * if any codes deduplicated more than two time , implement method here of the  deduplicated codes
  */
 public class Util {
     public static String name = "Tamkeen";
