@@ -28,7 +28,6 @@ ssn_image LONGBLOB,
 driving_license LONGBLOB,
 constraint pk_client primary key(ssn)
 );
-
 /* add some data*/
 
 insert into client (ssn,first_name, second_name, third_name, fourth_name,dob,phone_1,phone_2) values
@@ -77,6 +76,7 @@ constraint car_client_FK foreign key(client_id) references client(ssn) on delete
 
 /*add some data to car client
 */
+
 
 insert into car(car_id,client_id,model,engin_size,color,model_date,price,license_end) values
 ('B7Y58A103694Z2',404818155,'Subaru Outback',2500,'Gold','2002',120000,'2023-06-15'),
@@ -133,6 +133,7 @@ constraint pk_insurance primary key(ins_id),
 constraint car_insurance_FK foreign key(car_id) references car(car_id) on delete CASCADE ON update CASCADE,
 constraint client_insurance_FK foreign key(client_id) references client(ssn) on delete CASCADE ON update CASCADE
 );
+
 
 /*add some data to insurance*/
 
