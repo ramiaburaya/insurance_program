@@ -169,11 +169,11 @@ public class DBConnection {
     }
 
     //create insurance page
-    public static ResultSet searchForCar(String carId, String clientID) throws SQLException {
+    public static ResultSet searchForCar(String carId) throws SQLException {
         conn = DBConnection.getConnection();
-        preparedStatement = conn.prepareStatement("select * from car where car_id=? and client_id=?");
+        preparedStatement = conn.prepareStatement("select * from car where car_id=?");
         preparedStatement.setString(1, carId);
-        preparedStatement.setString(2, clientID);
+
         return preparedStatement.executeQuery();
     }
 
@@ -197,7 +197,7 @@ public class DBConnection {
         insertInsurance(carId, clientID, insurancePrice, insuranceType, String.valueOf(Util.formatterDate(licenseEnd)));
         preparedStatement.close();
         conn.close();
-        return searchForCar(carId, clientID);
+        return searchForCar(carId);
     }
 
     //create insurance page

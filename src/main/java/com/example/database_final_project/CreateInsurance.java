@@ -341,7 +341,7 @@ public class CreateInsurance {
             if (!Util.isEmptyField(carIdField)) {
                 if (carIdField.getText().length() >= 10) {
                     try {
-                        resultSet = DBConnection.searchForCar(carIdField.getText(), clientIdField.getText());
+                        resultSet = DBConnection.searchForCar(carIdField.getText());
                         Util.alert.setTitle("Result");
                         if (resultSet.next()) {
                             car.setColor(resultSet.getString("color"));
