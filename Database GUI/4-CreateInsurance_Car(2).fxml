@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="713.0" prefWidth="1365.0" style="-fx-background-color: #BFACE2;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ButtonBar layoutX="433.0" layoutY="29.0" prefHeight="40.0" prefWidth="500.0">
+        <buttons>
+          <Button mnemonicParsing="false" prefWidth="118.0" text="Create Insurance" textFill="#fffefe" />
+            <Button layoutX="135.0" layoutY="18.0" mnemonicParsing="false" text="Delete Insurance" textFill="#fffefe" />
+            <Button layoutX="200.0" layoutY="18.0" mnemonicParsing="false" text="Modify Insurance" textFill="#fffefe" />
+            <Button layoutX="285.0" layoutY="18.0" mnemonicParsing="false" text="Search" textFill="#fffefe" />
+        </buttons>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </ButtonBar>
+      <Button layoutX="1276.0" layoutY="674.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" styleClass="logout-button" text="Logout" textFill="WHITE" />
+      <ImageView fitHeight="70.0" fitWidth="267.0" layoutX="1084.0" layoutY="14.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@tamkeen.jpg" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="5.0" layoutY="96.0" prefHeight="559.0" prefWidth="1354.0" styleClass="pane">
+         <children>
+            <ButtonBar layoutX="479.0" layoutY="14.0" prefHeight="40.0" prefWidth="396.0">
+              <buttons>
+                <Button mnemonicParsing="false" text="Cleint Information" textFill="WHITE" />
+                  <Button layoutX="98.0" layoutY="18.0" mnemonicParsing="false" text="Car Information" textFill="WHITE" />
+                  <Button layoutX="30.0" layoutY="18.0" mnemonicParsing="false" text="Drivers Information" textFill="WHITE" />
+              </buttons>
+            </ButtonBar>
+            <AnchorPane layoutX="27.0" layoutY="54.0" prefHeight="483.0" prefWidth="1300.0" styleClass="pane-2">
+               <children>
+                  <TextArea editable="false" layoutX="14.0" layoutY="14.0" prefHeight="173.0" prefWidth="290.0" text="                                   Step&#10;-------------------------------------------------------&#10;1- Enter car ID&#10;2- Search&#10;3- User not in DataBase&#10;4- Insert all information&#10;5- Click calculate button&#10;6- Clieck Add button&#10;-------------------------------------------------------">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextArea>
+                  <Label layoutX="523.0" layoutY="33.0" prefHeight="27.0" prefWidth="110.0" text="Car ID">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="648.0" layoutY="33.0" promptText="car ID">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <Label layoutX="523.0" layoutY="76.0" prefHeight="27.0" prefWidth="110.0" text="Client ID">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="523.0" layoutY="105.0" prefHeight="27.0" prefWidth="145.0" promptText="Client id">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <Label layoutX="701.0" layoutY="76.0" prefHeight="27.0" prefWidth="110.0" text="Car model">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="701.0" layoutY="105.0" promptText="car model">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <Label layoutX="523.0" layoutY="143.0" prefHeight="27.0" prefWidth="110.0" text="Engine Size">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="523.0" layoutY="170.0" promptText="Engine Size">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <Label layoutX="701.0" layoutY="143.0" prefHeight="27.0" prefWidth="110.0" text="Color">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="702.0" layoutY="170.0" promptText="Color">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <Label layoutX="523.0" layoutY="208.0" prefHeight="27.0" prefWidth="110.0" text="Car license">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="523.0" layoutY="303.0" promptText="model Date">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <Label layoutX="701.0" layoutY="208.0" prefHeight="27.0" prefWidth="110.0" text="license End Date">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <DatePicker layoutX="702.0" layoutY="236.0" prefHeight="25.0" prefWidth="145.0" promptText="license End Date" />
+                  <Button layoutX="524.0" layoutY="236.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" text="Car license" textFill="WHITE" />
+                  <Label layoutX="523.0" layoutY="268.0" prefHeight="27.0" prefWidth="110.0" text="model Date">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label layoutX="701.0" layoutY="268.0" prefHeight="27.0" prefWidth="110.0" text="Car PRICE">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="701.0" layoutY="303.0" promptText=" CAR PRICE">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <ComboBox layoutX="522.0" layoutY="366.0" prefWidth="150.0" promptText="INSURANCE TYPE" />
+                  <Label layoutX="523.0" layoutY="339.0" prefHeight="27.0" prefWidth="110.0" text="INSURANCE TYPE">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <Button layoutX="748.0" layoutY="417.0" mnemonicParsing="false" text="SEARCH" textFill="WHITE" />
+                  <Button layoutX="578.0" layoutY="417.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="ADD" textFill="WHITE" />
+                  <Label layoutX="701.0" layoutY="339.0" prefHeight="27.0" prefWidth="110.0" text="insurance price">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <TextField layoutX="701.0" layoutY="365.0" promptText="INSURANCE PRICE">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </TextField>
+                  <Button layoutX="864.0" layoutY="366.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="Calculate" textFill="WHITE" />
+               </children></AnchorPane>
+         </children>
+      </AnchorPane>
+      <Label layoutX="53.0" layoutY="36.0" prefHeight="27.0" prefWidth="94.0" text="The operation">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Label>
+      <TextField layoutX="147.0" layoutY="37.0" />
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</AnchorPane>
