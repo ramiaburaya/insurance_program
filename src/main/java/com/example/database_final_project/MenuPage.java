@@ -120,7 +120,33 @@ public class MenuPage {
         modifyButton.getStyleClass().add("button");
         modifyButton.setOnAction(e -> {
             secondPane.getChildren().clear();
+
+            Button transferInsurance = new Button("Transfer Insurance");
+            transferInsurance.setCursor(Cursor.HAND);
+            transferInsurance.setTextFill(Paint.valueOf("#fffdfd"));
+            transferInsurance.getStyleClass().add("button");
+
+
+            Button changeInsuranceType = new Button("Change insurance Type");
+            changeInsuranceType.setCursor(Cursor.HAND);
+            changeInsuranceType.setTextFill(Paint.valueOf("#fffdfd"));
+            changeInsuranceType.getStyleClass().add("button");
+
+            ButtonBar createButtonsPane = Util.createButtonBar(479, 14, 396, 40, 70);
+            createButtonsPane.getButtons().addAll(transferInsurance, changeInsuranceType);
+
+            transferInsurance.setOnAction(x -> {
+                opField.setText("Transfer Insurance");
+                secondPane.getChildren().add(Update.TransferPane());
+            });
+
+            changeInsuranceType.setOnAction(x -> {
+                opField.setText("Change insurance");
+                secondPane.getChildren().add(Update.ChangeInsurancePane());
+            });
+
             opField.setText("Modify Insurance");
+            secondPane.getChildren().add(createButtonsPane);
         });
 
         Button searchButton = new Button("Search");

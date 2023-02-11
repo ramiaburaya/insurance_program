@@ -222,5 +222,23 @@ public class DBConnection {
         preparedStatement.close();
         conn.close();
     }
+
+    // saja : modify
+    public static ResultSet searchForInsuarcenModify(String insuranceId) throws SQLException {
+
+        conn = DBConnection.getConnection();
+        preparedStatement = conn.prepareStatement("select * from insurance where ins_id=?");
+        preparedStatement.setString(1, insuranceId);
+        return preparedStatement.executeQuery();
+    }
+    // saja : modify : Transfer
+    public static ResultSet searchForClientModify(String clientId) throws SQLException {
+
+        conn = DBConnection.getConnection();
+        preparedStatement = conn.prepareStatement("select * from client where ssn=?");
+        preparedStatement.setString(1, clientId);
+        return preparedStatement.executeQuery();
+    }
+
 }
 
