@@ -87,7 +87,6 @@ public class DeleteInsurance {
         TableColumn<Record, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("clientName"));
 
-
         TableColumn<Record, String> clientIdColumn = new TableColumn<>("Client ID");
         clientIdColumn.setCellValueFactory(new PropertyValueFactory<>("clientId"));
 

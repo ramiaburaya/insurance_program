@@ -83,7 +83,7 @@ public class DBConnection {
 
         String sql = """
                 Select client.first_name , client.ssn , insurance.car_id , car.model, insurance.ins_id,
-                insurance.insutance_type, insurance.start_date, insurance.end_date from client, insurance, car
+                insurance.insutance_type, insurance.start_date, insurance.end_date,client.fourth_name from client, insurance, car
                  where insurance.client_id = client.ssn and car.client_id= client.ssn and client.ssn=? and insurance.ins_id=?""";
 
         preparedStatement = conn.prepareStatement(sql);
@@ -96,7 +96,7 @@ public class DBConnection {
 
         if (s.next()) {
 
-            record.clientName = s.getString(1);
+            record.clientName = s.getString(1) + " " + s.getString(9);
             record.clientId = s.getString(2);
             record.carID = s.getString(3);
             record.carModel = s.getString(4);
